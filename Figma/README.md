@@ -24,6 +24,7 @@ This repository contains the **Figma design** for our e-commerce platform. The U
 
 ## 📸 Screenshots & Previews  
 ![Image](https://github.com/user-attachments/assets/436ad05a-470b-47c6-885b-481771f03a0f)
+![Image](https://github.com/user-attachments/assets/a83fe59a-583d-47df-9b29-b913b64f1c73)
 
 ## 📥 Accessing the Design  
 🔗 **Figma Link:** https://www.figma.com/design/Fmx4rFVneMf4iVFgwkjiLR/Shopping-Page?node-id=0-1&t=M7gXRK2LcG2RAv3J-1
