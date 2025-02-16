@@ -1,6 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Italiana&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.italiana {
+  font-family: 'Italiana', serif;
+}
 
 :root {
   --background: #ffffff;
