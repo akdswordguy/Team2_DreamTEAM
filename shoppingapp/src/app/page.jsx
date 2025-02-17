@@ -42,7 +42,7 @@ const LandingPage = () => {
             <input type="text" placeholder="Username or Email" className="login-input" />
             <input type="password" placeholder="Password" className="login-input" />
             <button className="btn login-submit">Login</button>
-            <p className="signup-text">Don't have an account? <Link href="#">Sign up</Link></p>
+            <p className="signup-text">Don't have an account? <Link href="./Signup">Sign up</Link></p>
           </div>
         </div>
       )}
