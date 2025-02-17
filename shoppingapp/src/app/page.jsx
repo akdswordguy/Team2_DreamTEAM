@@ -1,37 +1,51 @@
-import React from "react";
+'use client'
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import "./LandingPage.css";
 
 const LandingPage = () => {
+  const [showLogin, setShowLogin] = useState(false);
+
   return (
     <div className="landing-page">
       {/* Navbar */}
-<nav className="navbar">
-  <div className="logo-container">
-    <Image src="/company-logo.png" alt="Company Logo" width={35} height={35} />
-    <div className="logo">LUXORA</div>
-  </div>
-  <ul className="nav-links">
-    <li><Link href="#">Home</Link></li>
-    <li><Link href="#">Shop</Link></li>
-    <li><Link href="#">About</Link></li>
-    <li><Link href="#">Contact</Link></li>
-  </ul>
-  <div className="search-bar">
-    <input type="text" placeholder="Search products..." />
-    <button className="search-button">
-      <Image src="/maginifying.png" alt="Search" width={18} height={18} />
-    </button>
-  </div>
-  <div className="icons">
-    <Link href="/login">
-      <Image src="/login-img.png" alt="Login" width={22} height={22} />
-    </Link>
-  </div>
-</nav>
+      <nav className="navbar">
+        <div className="logo-container">
+          <Image src="/company-logo.png" alt="Company Logo" width={35} height={35} />
+          <div className="logo">LUXORA</div>
+        </div>
+        <ul className="nav-links">
+          <li><Link href="#">Home</Link></li>
+          <li><Link href="#">Shop</Link></li>
+          <li><Link href="#">About</Link></li>
+          <li><Link href="#">Contact</Link></li>
+        </ul>
+        <div className="search-bar">
+          <input type="text" placeholder="Search products..." />
+          <button className="search-button">
+            <Image src="/maginifying.png" alt="Search" width={18} height={18} />
+          </button>
+        </div>
+        <div className="icons">
+          <button className="login-btn" onClick={() => setShowLogin(true)}>
+            <Image src="/login-img.png" alt="Login" width={22} height={22} />
+          </button>
+        </div>
+      </nav>
 
-
+      {/* Login Modal */}
+      {showLogin && (
+        <div className="modal-overlay" onClick={() => setShowLogin(false)}>
+          <div className="login-modal" onClick={(e) => e.stopPropagation()}>
+            <h2>Login</h2>
+            <input type="text" placeholder="Username or Email" className="login-input" />
+            <input type="password" placeholder="Password" className="login-input" />
+            <button className="btn login-submit">Login</button>
+            <p className="signup-text">Don't have an account? <Link href="#">Sign up</Link></p>
+          </div>
+        </div>
+      )}
 
       {/* Hero Section */}
       <section className="hero">
