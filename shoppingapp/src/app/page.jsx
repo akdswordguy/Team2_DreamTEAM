@@ -5,11 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import "./LandingPage.css";
 
+
 const LandingPage = () => {
   const [showLogin, setShowLogin] = useState(false);
 
   return (
+
+      
+
     <div className="landing-page">
+     
       {/* Navbar */}
       <nav className="navbar">
         <div className="logo-container">
@@ -160,6 +165,8 @@ const LandingPage = () => {
 </footer>
 
     </div>
+
+
   );
 };
 
