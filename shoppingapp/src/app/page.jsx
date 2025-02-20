@@ -1,20 +1,14 @@
 'use client'
 import React, { useState } from "react";
-import "react-image-crop/dist/ReactCrop.css";
 import Image from "next/image";
 import Link from "next/link";
 import "./LandingPage.css";
-
 
 const LandingPage = () => {
   const [showLogin, setShowLogin] = useState(false);
 
   return (
-
-      
-
     <div className="landing-page">
-     
       {/* Navbar */}
       <nav className="navbar">
         <div className="logo-container">
@@ -23,8 +17,8 @@ const LandingPage = () => {
         </div>
         <ul className="nav-links">
           <li><Link href="#">Home</Link></li>
-          <li><Link href="/Shop">Shop</Link></li>
-          <li><Link href="#">About</Link></li>
+          <li><Link href="./Shop">Shop</Link></li>
+          <li><Link href="./Product">About</Link></li>
           <li><Link href="#">Contact</Link></li>
         </ul>
         <div className="search-bar">
@@ -165,8 +159,6 @@ const LandingPage = () => {
 </footer>
 
     </div>
-
-
   );
 };
 
