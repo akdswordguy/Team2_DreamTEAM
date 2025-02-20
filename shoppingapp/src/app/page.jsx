@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from "react";
+import "react-image-crop/dist/ReactCrop.css";
 import Image from "next/image";
 import Link from "next/link";
 import "./LandingPage.css";
