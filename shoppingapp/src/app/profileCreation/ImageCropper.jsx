@@ -47,7 +47,7 @@ const ImageCropper = ({ closeModal, updateAvatar }) => {
       {
         unit: "%",
         width: cropWidthInPercent,
-        height: cropWidthInPercent, // Add height to maintain aspect ratio
+        height: cropWidthInPercent, 
       },
       ASPECT_RATIO,
       width,

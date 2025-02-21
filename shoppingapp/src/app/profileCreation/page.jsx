@@ -2,11 +2,37 @@
 import React, { useState, useRef } from "react";
 import styles from "./profileCreation.module.css";
 import Profile from "./profile"
+import Image from "next/image";
+import Link from "next/link"
+import "react-image-crop/dist/ReactCrop.css";
 
-const Signup = () => {
+const createProfile = () => {
   
     return (
+
+
+
+        
         <div className={styles.signup}>
+        <nav className={styles.navbar}>
+        <div className={styles.logocontainer}>
+          <Image src="/company-logo.png" alt="Company Logo" width={35} height={35} />
+          <div className={styles.logo}>LUXORA</div>
+        </div>
+        <ul className={styles.navlinks}>
+          <li><Link href="./">Home</Link></li>
+          <li><Link href="/Shop">Shop</Link></li>
+          <li><Link href="#">About</Link></li>
+          <li><Link href="#">Contact</Link></li>
+        </ul>
+        <div className={styles.searchbar}>
+          <input type="text" placeholder="Search products..." />
+          <button className={styles.searchbutton}>
+            <Image src="/maginifying.png" alt="Search" width={18} height={18} />
+          </button>
+        </div>
+      </nav>
+          
             <div className={styles.signupcontainer}>
                 <div className={styles.signupheading}>
                     PERSONAL INFORMATION
@@ -95,7 +121,10 @@ const Signup = () => {
                 </div>
             </div>
         </div>
+        
     );
 };
 
-export default Signup;
+export default createProfile;
+
+
