@@ -4,7 +4,7 @@ body, html {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-  background: #ffffff;
+  background: #FAF3EB;
   color: #333;
 }
 
@@ -248,7 +248,7 @@ body, html {
 .customer-reviews {
     font-weight: 600;
     font-size: 21px;
-  margin-top: 70px;
+  margin-top: 10px;
   margin-bottom: 50px;
   text-align: left;
   width: 100%;
@@ -257,7 +257,7 @@ body, html {
 .review-cards {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   align-items: left;
 }
 
@@ -296,9 +296,10 @@ body, html {
 
 /* Similar Products */
 .gallery-title{
+  font-family: 'Italiana', serif;
     margin-top: 80px;
     font-weight: 600;
-    font-size: 21px;
+    font-size: 25px;
 }
 .similar-products {
   display: flex;
