@@ -378,7 +378,7 @@ body, html {
 .product-card button {
   width: 100%;
   padding: 12px 15px;
-  background: #d4a15ebe;
+  background: #b96900be;
   color: white;
   border: none;
   border-radius: 8px;
@@ -403,11 +403,11 @@ body, html {
 
 .page-button {
   padding: 10px 15px;
-  background: #d4a15ebe;
+  background: #b96900be;
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 16px;  
   font-weight: bold;
   cursor: pointer;
   transition: background 0.3s ease;

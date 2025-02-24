@@ -133,7 +133,7 @@ const LandingPage = () => {
     {/* Center Section - Navigation Links */}
     <ul className="footer-links">
       <li><Link href="#">Home</Link></li>
-      <li><Link href="#">Shop</Link></li>
+      <li><Link href="./Shop">Shop</Link></li>
       <li><Link href="#">About</Link></li>
       <li><Link href="#">Contact</Link></li>
     </ul>
@@ -141,8 +141,8 @@ const LandingPage = () => {
     {/* Right Section - Social Icons */}
     <div className="footer-right">
       <Link href="#"><Image src="/phone.png" alt="Phone" width={30} height={22} /></Link>
-      <Link href="#"><Image src="/X.png" alt="X" width={22} height={22} /></Link>
-      <Link href="#"><Image src="/instagram.png" alt="Instagram" width={22} height={22} /></Link>
+      <Link href="https://x.com/luxora_inc?lang=en"><Image src="/X.png" alt="X" width={22} height={22} /></Link>
+      <Link href="https://www.instagram.com/luxoraofficial/?hl=en"><Image src="/instagram.png" alt="Instagram" width={22} height={22} /></Link>
     </div>
   </div>
 
