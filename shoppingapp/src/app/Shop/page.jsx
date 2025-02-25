@@ -70,9 +70,11 @@ const ShopPage = () => {
           <button className="cart-btn">
             <Image src="/Cart.png" alt="Cart" width={22} height={22} />
           </button>
-          <button className="profile-btn">
-            <Image src="/profile.png" alt="Profile" width={24} height={24} />
-          </button>
+          <Link href="/profileCreation" passHref>
+            <button className="profile-btn">
+              <Image src="/profile.png" alt="Profile" width={24} height={24} />
+              </button>
+          </Link>
         </div>
       </nav>
 
