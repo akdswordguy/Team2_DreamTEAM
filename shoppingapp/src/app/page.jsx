@@ -18,8 +18,7 @@ const LandingPage = () => {
         <ul className="nav-links">
           <li><Link href="#">Home</Link></li>
           <li><Link href="./Shop">Shop</Link></li>
-          <li><Link href="./Product">About</Link></li>
-          <li><Link href="#">Contact</Link></li>
+          <li><Link href="./Contact">Contact</Link></li>
         </ul>
         <div className="search-bar">
           <input type="text" placeholder="Search products..." />
@@ -49,6 +48,11 @@ const LandingPage = () => {
 
       {/* Hero Section */}
       <section className="hero">
+          <video autoPlay loop muted playsInline className="hero-video">
+    <source src="/landing-vid.webm" type="video/webm" />
+    Your browser does not support the video tag.
+  </video>
+
         <div className="hero-content-container">
           <div className="hero-content">
             <p><b>Latest in Trends</b></p>
@@ -133,16 +137,15 @@ const LandingPage = () => {
     {/* Center Section - Navigation Links */}
     <ul className="footer-links">
       <li><Link href="#">Home</Link></li>
-      <li><Link href="./Shop">Shop</Link></li>
-      <li><Link href="#">About</Link></li>
+      <li><Link href="#">Shop</Link></li>
       <li><Link href="#">Contact</Link></li>
     </ul>
 
     {/* Right Section - Social Icons */}
     <div className="footer-right">
       <Link href="#"><Image src="/phone.png" alt="Phone" width={30} height={22} /></Link>
-      <Link href="https://x.com/luxora_inc?lang=en"><Image src="/X.png" alt="X" width={22} height={22} /></Link>
-      <Link href="https://www.instagram.com/luxoraofficial/?hl=en"><Image src="/instagram.png" alt="Instagram" width={22} height={22} /></Link>
+      <Link href="#"><Image src="/X.png" alt="X" width={22} height={22} /></Link>
+      <Link href="#"><Image src="/instagram.png" alt="Instagram" width={22} height={22} /></Link>
     </div>
   </div>
 
