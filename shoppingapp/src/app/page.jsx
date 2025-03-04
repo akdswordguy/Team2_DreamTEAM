@@ -2,10 +2,40 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { request, gql } from "graphql-request";
 import "./LandingPage.css";
+
+const LOGIN_MUTATION = gql`
+  mutation Login($username: String!, $password: String!) {
+    login(username: $username, password: $password)
+  }
+`;
+
+const GRAPHQL_ENDPOINT = "http://127.0.0.1:8000/auth_app/graphql/"; 
 
 const LandingPage = () => {
   const [showLogin, setShowLogin] = useState(false);
+  const [credentials, setCredentials] = useState({ username: "", password: "" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleLogin = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await request(GRAPHQL_ENDPOINT, LOGIN_MUTATION, credentials);
+      if (response.login) {
+        alert("Login successful!");
+        setShowLogin(false);
+      } else {
+        alert("Invalid credentials");
+      }
+    } catch (err) {
+      setError("Login failed. Please try again.");
+    }
+    setLoading(false);
+  };
+
 
   return (
     <div className="landing-page">
@@ -39,9 +69,24 @@ const LandingPage = () => {
         <div className="modal-overlay" onClick={() => setShowLogin(false)}>
           <div className="login-modal" onClick={(e) => e.stopPropagation()}>
             <h2>Login</h2>
-            <input type="text" placeholder="Username or Email" className="login-input" />
-            <input type="password" placeholder="Password" className="login-input" />
-            <button className="btn login-submit">Login</button>
+            <input
+              type="text"
+              placeholder="Username"
+              className="login-input"
+              value={credentials.username}
+              onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              className="login-input"
+              value={credentials.password}
+              onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+            />
+            <button className="btn login-submit" onClick={handleLogin} disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
+            {error && <p className="error-text">{error}</p>}
             <p className="signup-text">Don't have an account? <Link href="./Signup">Sign up</Link></p>
           </div>
         </div>
