@@ -46,7 +46,7 @@ const LandingPage = () => {
           <div className="logo">LUXORA</div>
         </div>
         <ul className="nav-links">
-          <li><Link href="/profileCreation">Home</Link></li>
+          <li><Link href="#">Home</Link></li>
           <li><Link href="./Shop">Shop</Link></li>
           <li><Link href="./Product">About</Link></li>
           <li><Link href="#">Contact</Link></li>
