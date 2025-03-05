@@ -6,6 +6,7 @@ __pycache__/
 # Virtual environment
 env/
 parthenv/
+venv/
 
 # Django-related files
 *.log
