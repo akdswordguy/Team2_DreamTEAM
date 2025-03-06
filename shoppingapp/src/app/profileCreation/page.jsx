@@ -1,13 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import Profile from "./profile";
 import Image from "next/image";
 import Link from "next/link";
 import "react-image-crop/dist/ReactCrop.css";
 import "./profileCreation.css";
+import AuthContext from "../AuthContext"; 
 
 const CreateProfile = () => {
   const [showLogin, setShowLogin] = useState(false);
+  const { isAuthenticated, logout } = useContext(AuthContext);
+
 
   return (
     <div className="signup">
@@ -107,7 +110,11 @@ const CreateProfile = () => {
             {/* Buttons: Update Profile & Log Out */}
             <div className="button-group">
               <button className="update-profile-button">Update Profile</button>
-              <button className="logout-button">Log Out</button>
+              <button className="logout-button" onClick={() => {
+              logout();
+               alert("You have been logged out successfully!");
+                }} >Log Out</button> 
+              
             </div>
           </div>
         </div>
