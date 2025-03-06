@@ -1,10 +1,10 @@
 'use client'
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import "./LandingPage.css";
 import { request, gql } from "graphql-request";
-
+import AuthContext from "./AuthContext"; 
 
 const LOGIN_MUTATION = gql`
   mutation Login($username: String!, $password: String!) {
@@ -15,6 +15,7 @@ const LOGIN_MUTATION = gql`
 const GRAPHQL_ENDPOINT = "http://127.0.0.1:8000/auth_app/graphql/";
 
 const LandingPage = () => {
+  const { isAuthenticated, login } = useContext(AuthContext); // Moved inside the component
   const [showLogin, setShowLogin] = useState(false);
   const [credentials, setCredentials] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
@@ -34,11 +35,17 @@ const LandingPage = () => {
   };
 
   const handleLogin = async () => {
+    if (isAuthenticated) {
+      alert("You are already logged in.");
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
       const response = await request(GRAPHQL_ENDPOINT, LOGIN_MUTATION, credentials);
-      if (response.login) {
+    
+       if (response.login) {
+        login();  // Update global state
         alert("Login successful!");
         setShowLogin(false);
       } else {

@@ -1,6 +1,6 @@
 asgiref==3.8.1
 chowkidar-strawberry==0.3.2
-Django==4.2.19
+django==4.2.19
 django-ipware==7.0.1
 djangorestframework==3.15.2
 graphql-core==3.2.6
