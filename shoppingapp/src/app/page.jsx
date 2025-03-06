@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import "./LandingPage.css";
@@ -12,14 +12,26 @@ const LOGIN_MUTATION = gql`
   }
 `;
 
-const GRAPHQL_ENDPOINT = "http://127.0.0.1:8000/auth_app/graphql/"; 
-
+const GRAPHQL_ENDPOINT = "http://127.0.0.1:8000/auth_app/graphql/";
 
 const LandingPage = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [credentials, setCredentials] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const categoriesRef = useRef(null);
+
+  const scrollLeft = () => {
+    if (categoriesRef.current) {
+      categoriesRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (categoriesRef.current) {
+      categoriesRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    }
+  };
 
   const handleLogin = async () => {
     setLoading(true);
@@ -92,7 +104,6 @@ const LandingPage = () => {
         </div>
       )}
 
-
       {/* Hero Section */}
       <section className="hero">
           <video autoPlay loop muted playsInline className="hero-video">
@@ -106,7 +117,9 @@ const LandingPage = () => {
             <h2>Discover Our <span>Wide Collection</span></h2>
             <p>Bringing you the finest luxury products to match your perfect style.
             From budget friendly to top of the line.</p>
+            <Link href="./Shop">
             <button className="btn">Shop Now</button>
+            </Link>
           </div>
         </div>
       </section>
@@ -114,19 +127,24 @@ const LandingPage = () => {
       {/* Browse Categories */}
       <section className="categories">
         <h3 className="section-title">Browse Categories</h3>
-        <div className="categories-container">
-          <div className="category-card">
-            <Image src="/technology.jpeg" alt="Technology" width={280} height={180} className="category-img" />
-            <p>Technology</p>
+        <div className="categories-wrapper">
+          <button className="scroll-button scroll-left" onClick={scrollLeft}>&#8249;</button>
+          <div className="categories-scroll-container" ref={categoriesRef}>
+            <div className="categories-container">
+              {[
+                "Technology", "Decor", "Fashion", "Watches", "Jewelry",
+                "Beauty", "Shoes", "Bags", "Home Essentials", "Gadgets",
+                "Sports", "Fitness", "Toys", "Books", "Music",
+               "Outdoor", "Gaming", "Health & Wellness"
+              ].map((category, index) => (
+                <div className="category-card" key={index}>
+                  <Image src={`/${category.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}.jpg`} alt={category} width={280} height={180} className="category-img" />
+                  <p>{category}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="category-card">
-            <Image src="/furniture.jpg" alt="Decor" width={280} height={180} className="category-img" />
-            <p>Decor</p>
-          </div>
-          <div className="category-card">
-            <Image src="/fashion.jpg" alt="Fashion" width={280} height={180} className="category-img" />
-            <p>Fashion</p>
-          </div>
+          <button className="scroll-button scroll-right" onClick={scrollRight}>&#8250;</button>
         </div>
       </section>
 
@@ -184,15 +202,15 @@ const LandingPage = () => {
     {/* Center Section - Navigation Links */}
     <ul className="footer-links">
       <li><Link href="#">Home</Link></li>
-      <li><Link href="#">Shop</Link></li>
-      <li><Link href="#">Contact</Link></li>
+      <li><Link href="./Shop">Shop</Link></li>
+      <li><Link href="./Contact">Contact</Link></li>
     </ul>
 
     {/* Right Section - Social Icons */}
     <div className="footer-right">
       <Link href="#"><Image src="/phone.png" alt="Phone" width={30} height={22} /></Link>
-      <Link href="#"><Image src="/X.png" alt="X" width={22} height={22} /></Link>
-      <Link href="#"><Image src="/instagram.png" alt="Instagram" width={22} height={22} /></Link>
+      <Link href="https://x.com/luxora_inc?lang=en"><Image src="/X.png" alt="X" width={22} height={22} /></Link>
+      <Link href="https://www.instagram.com/luxoraofficial/?hl=en"><Image src="/instagram.png" alt="Instagram" width={22} height={22} /></Link>
     </div>
   </div>
 

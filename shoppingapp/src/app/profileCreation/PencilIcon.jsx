@@ -4,7 +4,7 @@ const PencilIcon = () => (
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={1.5}
-      stroke="currentColor"
+      stroke="white"
       className="w-4 h-4"
     >
       <path

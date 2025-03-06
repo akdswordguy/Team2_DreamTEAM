@@ -1,130 +1,128 @@
 "use client";
-import React, { useState, useRef } from "react";
-import styles from "./profileCreation.module.css";
-import Profile from "./profile"
+import React, { useState } from "react";
+import Profile from "./profile";
 import Image from "next/image";
-import Link from "next/link"
+import Link from "next/link";
 import "react-image-crop/dist/ReactCrop.css";
+import "./profileCreation.css";
 
-const createProfile = () => {
-  
-    return (
+const CreateProfile = () => {
+  const [showLogin, setShowLogin] = useState(false);
 
-
-
-        
-        <div className={styles.signup}>
-        <nav className={styles.navbar}>
-        <div className={styles.logocontainer}>
+  return (
+    <div className="signup">
+      {/* Navbar */}
+      <nav className="navbar">
+        <div className="logo-container">
           <Image src="/company-logo.png" alt="Company Logo" width={35} height={35} />
-          <div className={styles.logo}>LUXORA</div>
+          <div className="logo">LUXORA</div>
         </div>
-        <ul className={styles.navlinks}>
+        <ul className="nav-links">
           <li><Link href="./">Home</Link></li>
-          <li><Link href="/Shop">Shop</Link></li>
-          <li><Link href="#">About</Link></li>
-          <li><Link href="#">Contact</Link></li>
+          <li><Link href="./Shop">Shop</Link></li>
+          <li><Link href="./Contact">Contact</Link></li>
         </ul>
-        <div className={styles.searchbar}>
+        <div className="search-bar">
           <input type="text" placeholder="Search products..." />
-          <button className={styles.searchbutton}>
+          <button className="search-button">
             <Image src="/maginifying.png" alt="Search" width={18} height={18} />
           </button>
         </div>
-      </nav>
-          
-            <div className={styles.signupcontainer}>
-                <div className={styles.signupheading}>
-                    PERSONAL INFORMATION
-                </div>
-                <div className={styles.inputContainer}>
-                    <label className={styles.inputLabel} htmlFor="firstName">
-                        First Name
-                    </label>
-                    <input type="text" id="firstName" className={styles.inputField} placeholder="First Name" />
-
-                    <label className={styles.inputLabelLast} htmlFor="lastName">
-                        Last Name
-                    </label>
-                    <input type="text" id="lastName" className={styles.inputFieldLast} placeholder="Last Name" />
-                </div>
-               
-
-                <div className={styles.inputContainer2}>
-                    <label className={styles.inputLabel} htmlFor="phone">
-                        Phone
-                    </label>
-                    <input type="text" id="phone" className={styles.inputField} placeholder="Phone" />
-
-                    <label className={styles.inputLabelLast} htmlFor="email">
-                        Mail Id
-                    </label>
-                    <input type="email" id="email" className={styles.inputFieldLast} placeholder="Mail@gmail.com" />
-                </div>
-
-                <div className={styles.inputContainer3}>
-                    <label className={styles.inputLabel} htmlFor="username">
-                        Username
-                    </label>
-                    <input type="text" id="username" className={styles.inputField} placeholder="Username" />
-
-                    <label className={styles.inputLabelLast} htmlFor="password">
-                        Password
-                    </label>
-                    <input type="password" id="password" className={styles.inputFieldLast} placeholder="Password" />
-                </div>
-                <div className={styles.new}>
-
-                    <Profile/>
-                    </div>
-    
-            </div>
-
-            <div className={styles.signupcontainer}>
-                <div className={styles.signupheading2}>
-                    LOCATION INFORMATION
-                </div>
-                <div className={styles.inputContainer}>
-                    <label className={styles.inputLabel} htmlFor="street">
-                        Street
-                    </label>
-                    <input type="text" id="street" className={styles.inputField} placeholder="Street" />
-
-                    <label className={styles.inputLabelLast} htmlFor="city">
-                        City
-                    </label>
-                    <input type="text" id="city" className={styles.inputFieldLast} placeholder="City" />
-
-                    <label className={styles.inputLabelLast2} htmlFor="landmark">
-                        Landmark
-                    </label>
-                    <input type="text" id="landmark" className={styles.inputFieldLast2} placeholder="Landmark" />
-                </div>
-
-                <div className={styles.inputContainer2}>
-                    <label className={styles.inputLabel} htmlFor="state">
-                        State
-                    </label>
-                    <input type="text" id="state" className={styles.inputField} placeholder="State" />
-
-                    <label className={styles.inputLabelLast} htmlFor="country">
-                        Country
-                    </label>
-                    <input type="email" id="country" className={styles.inputFieldLast} placeholder="Country" />
-
-                    <label className={styles.inputLabelLast2} htmlFor="postalCode">
-                        Postal Code
-                    </label>
-                    <input type="number" id="postalCode" className={styles.inputFieldLast2} placeholder="Postal Code" />
-
-                    <button className={styles.signup_button}>Create Profile</button>
-                </div>
-            </div>
+        <div className="icons">
+          <button className="login-btn" onClick={() => setShowLogin(true)}>
+            <Image src="/login-img.png" alt="Login" width={22} height={22} />
+          </button>
         </div>
-        
-    );
+      </nav>
+
+      {/* Main Container */}
+      <div className="main-content">
+        {/* Left Content - Form and Profile Upload */}
+        <div className="left-section">
+          {/* Signup Section */}
+          <div className="signup-container">
+            <h2 className="section-title">Personal Information</h2>
+            <div className="form-container">
+              {/* Profile Upload Section - Positioned on Left */}
+              <div className="profile-upload">
+                <Profile />
+              </div>
+
+              {/* Form Fields */}
+              <div className="form-fields">
+                <div className="input-group">
+                  <label htmlFor="firstName">First Name</label>
+                  <input type="text" id="firstName" placeholder="First Name" />
+                </div>
+                <div className="input-group">
+                  <label htmlFor="lastName">Last Name</label>
+                  <input type="text" id="lastName" placeholder="Last Name" />
+                </div>
+                <div className="input-group">
+                  <label htmlFor="phone">Phone</label>
+                  <input type="text" id="phone" placeholder="Phone" />
+                </div>
+                <div className="input-group">
+                  <label htmlFor="email">Mail ID</label>
+                  <input type="email" id="email" placeholder="example@mail.com" />
+                </div>
+                <div className="input-group">
+                  <label htmlFor="username">Username</label>
+                  <input type="text" id="username" placeholder="Username" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Location Information Section */}
+          <div className="signup-container">
+            <h2 className="section-title">Location Information</h2>
+            <div className="form-fields">
+              <div className="input-group">
+                <label htmlFor="street">Street</label>
+                <input type="text" id="street" placeholder="Street" />
+              </div>
+              <div className="input-group">
+                <label htmlFor="city">City</label>
+                <input type="text" id="city" placeholder="City" />
+              </div>
+              <div className="input-group">
+                <label htmlFor="landmark">Landmark</label>
+                <input type="text" id="landmark" placeholder="Landmark" />
+              </div>
+              <div className="input-group">
+                <label htmlFor="state">State</label>
+                <input type="text" id="state" placeholder="State" />
+              </div>
+              <div className="input-group">
+                <label htmlFor="country">Country</label>
+                <input type="text" id="country" placeholder="Country" />
+              </div>
+              <div className="input-group">
+                <label htmlFor="postalCode">Postal Code</label>
+                <input type="number" id="postalCode" placeholder="Postal Code" />
+              </div>
+            </div>
+
+            {/* Buttons: Update Profile & Log Out */}
+            <div className="button-group">
+              <button className="update-profile-button">Update Profile</button>
+              <button className="logout-button">Log Out</button>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Content - Video Placeholder */}
+            <div className="right-section">
+    <video className="video-content" autoPlay loop muted playsInline>
+        <source src="./animation.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+    </video>
+    </div>
+
+        </div>
+      </div>
+  );
 };
 
-export default createProfile;
-
-
+export default CreateProfile;
