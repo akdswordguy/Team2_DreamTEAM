@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { createContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
@@ -6,7 +6,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Check for login state in localStorage when the app loads
+  // Check login state on app load
   useEffect(() => {
     const storedAuth = localStorage.getItem("isAuthenticated");
     if (storedAuth) {
@@ -14,9 +14,45 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = () => {
-    setIsAuthenticated(true);
-    localStorage.setItem("isAuthenticated", JSON.stringify(true));
+  const login = async (username, password) => {
+    if (isAuthenticated) {
+      alert("You are already logged in!");
+      return;
+    }
+
+    try {
+      const response = await fetch("/auth_app/graphql/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          query: `
+            mutation Login($username: String!, $password: String!) {
+              login(username: $username, password: $password) {
+                success
+                username
+                token
+                errors
+              }
+            }
+          `,
+          variables: { username, password },
+        }),
+      });
+
+      const data = await response.json();
+      const loginResult = data.data.login;
+
+      if (loginResult.success) {
+        setIsAuthenticated(true);
+        localStorage.setItem("isAuthenticated", JSON.stringify(true));
+        alert(`Welcome back, ${loginResult.username}!`);
+      } else {
+        alert(loginResult.errors || "Login failed");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("An error occurred. Please try again.");
+    }
   };
 
   const logout = () => {

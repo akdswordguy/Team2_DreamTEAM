@@ -1,27 +1,29 @@
 import strawberry
-
+import logging
 from django.db import IntegrityError
+from django.contrib.auth.models import User
+from typing import Optional
 from chowkidar.wrappers import issue_tokens_on_login, revoke_tokens_on_logout
 from chowkidar.authentication import authenticate
-from django.contrib.auth.models import User
-
-import logging
 
 logger = logging.getLogger(__name__)
-
 
 @strawberry.type
 class RegisterResponse:
     message: str
     success: bool
 
+@strawberry.type
+class LoginResult:
+    success: bool
+    username: Optional[str]
+    token: Optional[str]
+    errors: Optional[str]
 
 @strawberry.type
 class AuthMutations:
     @strawberry.mutation
-    def register(
-        self, username: str, email: str, password: str, name: str
-    ) -> RegisterResponse:
+    def register(self, username: str, email: str, password: str, name: str) -> RegisterResponse:
         try:
             user = User.objects.create_user(
                 username=username,
@@ -29,11 +31,13 @@ class AuthMutations:
                 password=password,
                 first_name=name,
             )
-
+            logger.info(f"User {user.username} registered successfully!")
             return RegisterResponse(
-                message=f"User {user.username} registered successfully!", success=True
+                message=f"User {user.username} registered successfully!",
+                success=True,
             )
         except IntegrityError:
+            logger.warning("Registration failed: A user with that username or email already exists.")
             return RegisterResponse(
                 message="A user with that username or email already exists.",
                 success=False,
@@ -41,16 +45,36 @@ class AuthMutations:
 
     @strawberry.mutation
     @issue_tokens_on_login
-    def login(self, info, username: str, password: str) -> bool:
-        print(f"Username: {username}, Password: {password}")
+    def login(self, info, username: str, password: str) -> LoginResult:
+        request = info.context["request"]
+
+        # Prevent multiple logins
+        if request.user.is_authenticated:
+            logger.warning("Login attempt while already authenticated.")
+            return LoginResult(
+                success=False,
+                username=request.user.username,
+                token=None,
+                errors="You are already logged in!",
+            )
+
         user = authenticate(username=username, password=password)
-        if user is None:
-            raise Exception("Invalid username or password")
-        info.context.LOGIN_USER = user
-        return True
+        if user:
+            jwt_access_token = request.COOKIES.get("JWT_ACCESS_TOKEN")
+            logger.info(f"User {user.username} logged in successfully.")
+            return LoginResult(
+                success=True,
+                username=user.username,
+                token=jwt_access_token,
+                errors=None,
+            )
+        
+        logger.warning("Login failed: Invalid credentials.")
+        return LoginResult(success=False, username=None, token=None, errors="Invalid credentials")
 
     @strawberry.mutation
     @revoke_tokens_on_logout
     def logout(self, info) -> bool:
-        info.context.LOGOUT_USER = True
+        info.context["LOGOUT_USER"] = True
+        logger.info("User logged out successfully.")
         return True
