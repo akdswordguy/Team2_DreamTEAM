@@ -1,0 +1,108 @@
+/* CategoryList.css */
+@import url('https://fonts.googleapis.com/css2?family=Italiana&display=swap');
+
+.categories {
+  font-weight: 800;
+  font-family: 'Italiana', serif;
+  font-size: 26px;
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.section-title {
+  margin-bottom: 20px;
+}
+
+.categories-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 20px 50px;
+  scrollbar-width: none;
+}
+
+.categories-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.categories-container {
+  display: flex;
+  gap: 30px;
+  background: #FAF3EB;
+  padding: 30px;
+  border-radius: 12px;
+  min-width: max-content;
+}
+
+/* Individual Category Cards */
+.category-card {
+  background: white;
+  padding: 5px;
+  border-radius: 12px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 280px;
+  flex-shrink: 0;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.category-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Category Images */
+.category-img {
+  border-radius: 8px;
+  width: 100%;
+  height: 325px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.category-card h4 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0 5px;
+  color: #333;
+}
+
+.category-card p {
+  font-size: 14px;
+  color: #666;
+  margin: 0 10px 10px;
+  height: 40px;
+  overflow: hidden;
+}
+
+.btn {
+  background: #C18C5D;
+  border: none;
+  padding: 12px 25px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  transition: 0.3s;
+  margin-bottom: 5px;
+}
+
+.view-category-btn {
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #A57245;
+}
+
+.loading-text,
+.error-text {
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  color: #666;
+}
+
+.error-text {
+  color: #ff4444;
+}

@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { request, gql } from "graphql-request";
 import AuthContext from "./AuthContext";
 import LoginModal from "./components/LoginModal";
@@ -26,6 +27,25 @@ const LandingPage = () => {
   const { isAuthenticated, login } = useContext(AuthContext);
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const categoriesRef = useRef(null);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const lastVisited = sessionStorage.getItem("lastVisitedPage");
+      const hasReloaded = sessionStorage.getItem("hasReloaded");
+  
+      if (lastVisited === pathname && hasReloaded !== "true") {
+        sessionStorage.setItem("hasReloaded", "true");
+        window.location.reload();
+      } else {
+        sessionStorage.setItem("hasReloaded", "false");
+      }
+  
+      sessionStorage.setItem("lastVisitedPage", pathname);
+    }
+  }, [pathname]);
+
+  
 
   // ✅ Fix: Ensure username & password are passed correctly
   const handleLogin = async (username, password) => {
@@ -62,8 +82,17 @@ const LandingPage = () => {
     }
   };
 
-  const scrollLeft = () => categoriesRef.current?.scrollBy({ left: -300, behavior: "smooth" });
-  const scrollRight = () => categoriesRef.current?.scrollBy({ left: 300, behavior: "smooth" });
+  const scrollLeft = () => {
+    if (categoriesRef.current) {
+      categoriesRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (categoriesRef.current) {
+      categoriesRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    }
+  };
 
   return (
     <div className="landing-page">
@@ -81,7 +110,7 @@ const LandingPage = () => {
         <div className="search-bar">
           <input type="text" placeholder="Search products..." />
           <button className="search-button">
-            <Image src="/magnifying.png" alt="Search" width={18} height={18} />
+            <Image src="/maginifying.png" alt="Search" width={18} height={18} />
           </button>
         </div>
         <div className="icons">
@@ -118,10 +147,88 @@ const LandingPage = () => {
 
       {/* Browse Categories */}
       <section className="categories">
-        <h3 className="section-title">Browse Categories</h3>
         <CategoryList />
       </section>
+
+    {/* Popular Products */}
+<section className="popular-categories">
+  <h3 className="section-title">Popular Products</h3>
+  <div className="categories-wrapper">
+    <div className="category-grid">
+      <div className="category-item large offset-up">
+        <Image src="/gallery_1.jpg" alt="Category 1" width={300} height={350} className="category-img" />
+      </div>
+      <div className="category-item medium offset-down">
+        <Image src="/gallery_2.jpg" alt="Category 2" width={220} height={250} className="category-img" />
+      </div>
+      <div className="category-item small">
+        <Image src="/gallery_3.jpg" alt="Category 3" width={180} height={200} className="category-img" />
+      </div>
+      <div className="category-item large">
+        <Image src="/gallery_4.jpg" alt="Category 4" width={300} height={400} className="category-img" />
+      </div>
+      <div className="category-item medium offset-up">
+        <Image src="/gallery_5.jpeg" alt="Category 5" width={220} height={270} className="category-img" />
+      </div>
+      <div className="category-item small offset-down">
+        <Image src="/gallery_7.jpg" alt="Category 6" width={180} height={220} className="category-img" />
+      </div>
+      <div className="category-item large">
+        <Image src="/gallery_8.jpg" alt="Category 7" width={300} height={380} className="category-img" />
+      </div>
+      <div className="category-item medium offset-up">
+        <Image src="/gallery_8.jpg" alt="Category 8" width={180} height={220} className="category-img" />
+      </div>
     </div>
+  </div>
+
+  {/* Scroll Right Arrow */}
+  <button className="scroll-arrow">→</button>
+</section>
+
+
+      {/* Footer */}
+<footer className="footer">
+  <div className="footer-container">
+    {/* Left Section - Logo & Address */}
+    <div className="footer-left">
+      <div className="footer-logo-container">
+        <Image src="/company-logo.png" alt="Company Logo" width={35} height={35} />
+        <span className="footer-logo">LUXORA</span>
+      </div>
+      <p className="footer-address">Address of the Company<br />P.O. Box</p>
+    </div>
+
+    {/* Center Section - Navigation Links */}
+    <ul className="footer-links">
+      <li><Link href="#">Home</Link></li>
+      <li><Link href="./Shop">Shop</Link></li>
+      <li><Link href="./Contact">Contact</Link></li>
+    </ul>
+
+    {/* Right Section - Social Icons */}
+    <div className="footer-right">
+      <Link href="#"><Image src="/phone.png" alt="Phone" width={30} height={22} /></Link>
+      <Link href="https://x.com/luxora_inc?lang=en"><Image src="/X.png" alt="X" width={22} height={22} /></Link>
+      <Link href="https://www.instagram.com/luxoraofficial/?hl=en"><Image src="/instagram.png" alt="Instagram" width={22} height={22} /></Link>
+    </div>
+  </div>
+
+  {/* Privacy & Policy Link */}
+  <div className="privacy-policy">
+    <Link href="#">Privacy & Policy</Link>
+  </div>
+
+  {/* Divider */}
+  <hr className="footer-divider" />
+
+  {/* Bottom Section - Copyright */}
+  <p className="footer-bottom-text">All rights reserved</p>
+</footer>
+
+    </div>
+
+    
   );
 };
 
