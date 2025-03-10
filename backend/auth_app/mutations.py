@@ -20,6 +20,18 @@ class LoginResult:
     token: Optional[str]
     errors: Optional[str]
 
+@strawberry.input
+class SignupInput:
+    username: str
+    email: str
+    password: str
+    name: str
+
+@strawberry.type
+class SignupResponse:
+    message: str
+    success: bool
+
 @strawberry.type
 class AuthMutations:
     @strawberry.mutation
@@ -39,6 +51,24 @@ class AuthMutations:
         except IntegrityError:
             logger.warning("Registration failed: A user with that username or email already exists.")
             return RegisterResponse(
+                message="A user with that username or email already exists.",
+                success=False,
+            )
+
+    @strawberry.mutation
+    def signup(self, input: SignupInput) -> SignupResponse:
+        try:
+            user = User.objects.create_user(
+                username=input.username,
+                email=input.email,
+                password=input.password,
+                first_name=input.name,
+            )
+            return SignupResponse(
+                message=f"User {user.username} signed up successfully!", success=True
+            )
+        except IntegrityError:
+            return SignupResponse(
                 message="A user with that username or email already exists.",
                 success=False,
             )
@@ -68,7 +98,7 @@ class AuthMutations:
                 token=jwt_access_token,
                 errors=None,
             )
-        
+
         logger.warning("Login failed: Invalid credentials.")
         return LoginResult(success=False, username=None, token=None, errors="Invalid credentials")
 

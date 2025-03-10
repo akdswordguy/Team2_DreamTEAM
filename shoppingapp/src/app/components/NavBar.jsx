@@ -4,11 +4,17 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import "./NavBar.css";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
+import { useRouter } from "next/navigation";
 
 const NavBar = ({ setShowLogin }) => {
   const { isLoggedIn, logout, username } = useAuth();
-
+  const { totalQuantity } = useCart();
+  const router = useRouter();
+  const handleCartClick = () => {
+    router.push("/Cart"); // Navigate to the Cart page
+  };
   return (
     <nav className="navbar">
       {/* Logo Section */}
@@ -28,10 +34,10 @@ const NavBar = ({ setShowLogin }) => {
           <Link href="/">Home</Link>
         </li>
         <li>
-          <Link href="/Shop">Shop</Link>
+          <Link href="/shop">Shop</Link>
         </li>
         <li>
-          <Link href="/Contact">Contact</Link>
+          <Link href="/contact">Contact</Link>
         </li>
       </ul>
       <div className="search-bar">
@@ -43,6 +49,13 @@ const NavBar = ({ setShowLogin }) => {
 
       {/* Login/Logout Buttons */}
       <div className="icons">
+        <button className="cart-btn" onClick={handleCartClick}>
+          <Image src="/cart-icon.png" alt="Cart" width={22} height={22} />
+          {totalQuantity > 0 && (
+            <span className="cart-count">{totalQuantity}</span>
+          )}
+        </button>
+
         {isLoggedIn ? (
           <div className="user-info">
             <span className="welcome-text">Welcome, {username}!</span>{" "}
