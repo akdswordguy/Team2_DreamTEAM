@@ -11,7 +11,12 @@ import AuthContext from "../AuthContext";
 
 const LOGIN_MUTATION = gql`
   mutation Login($username: String!, $password: String!) {
-    login(username: $username, password: $password)
+    login(username: $username, password: $password) {
+      success
+      username
+      token
+      errors
+    }
   }
 `;
 

@@ -9,6 +9,8 @@ export const GET_CATEGORY_PRODUCTS = gql`
       products {
         id
         name
+        imageUrl
+        price
       }
     }
   }
@@ -23,8 +25,8 @@ export const GET_ALL_CATEGORIES = gql`
       products {
         id
         name
+        imageUrl
         price
-        stock
       }
     }
   }

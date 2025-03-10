@@ -3,6 +3,9 @@
 import React, { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { authClient } from "../utils/apollo-client";
+import Link from "next/link";
+import { useAuth } from "../AuthContext";
+import "./LoginModal.css";
 
 const LOGIN_MUTATION = gql`
   mutation Login($username: String!, $password: String!) {
@@ -21,12 +24,14 @@ const LoginModal = ({ isOpen, closeModal, onLoginSuccess }) => {
     password: "",
   });
   const [loginError, setLoginError] = useState(null);
+  const { login } = useAuth();
+  // Use Apollo Client for GraphQL login mutation
   const [loginMutation, { loading }] = useMutation(LOGIN_MUTATION, {
-    client: authClient,
+    client: authClient, // Pass authClient here
   });
 
   const handleLogin = async () => {
-    setLoginError(null);
+    setLoginError(null); // Clear any previous errors
 
     try {
       const { data } = await loginMutation({
@@ -34,14 +39,18 @@ const LoginModal = ({ isOpen, closeModal, onLoginSuccess }) => {
       });
 
       if (data?.login?.success) {
-        onLoginSuccess();
-        closeModal();
+        login(data.login.username);
+        onLoginSuccess(); // Trigger successful login
+        closeModal(); // Close the modal
         alert(`Welcome back, ${data?.login?.username}!`);
       } else {
-        setLoginError("Invalid credentials. Please try again.");
+        setLoginError(
+          data?.login?.errors || "Invalid credentials, please try again."
+        );
       }
     } catch (err) {
-      setLoginError("Login failed. Please try again.");
+      console.error(err); // Log errors for debugging
+      setLoginError("An error occurred. Please try again.");
     }
   };
 
@@ -72,10 +81,13 @@ const LoginModal = ({ isOpen, closeModal, onLoginSuccess }) => {
         <button
           className="btn login-submit"
           onClick={handleLogin}
-          disabled={loading}
+          disabled={loading} // Disable button during loading
         >
           {loading ? "Logging in..." : "Login"}
         </button>
+        <p className="signup-text">
+          Don't have an account? <Link href="./Signup">Sign up</Link>
+        </p>
         {loginError && <p className="error-text">{loginError}</p>}
       </div>
     </div>

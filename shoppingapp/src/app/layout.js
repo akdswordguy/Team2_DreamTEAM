@@ -1,7 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import { AuthProvider } from "./AuthContext"; 
+import { AuthProvider } from "./AuthContext";
 import "./globals.css";
 
+// Font configuration
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -12,22 +13,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "LUXORA",
-  description: "Luxury & Modern Shopping Experience",
-};
-
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <head>
-        <title>{metadata.title}</title>
-        <meta name="description" content={metadata.description} />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className="antialiased">
+        {/* Wrap the children components with the AuthProvider */}
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

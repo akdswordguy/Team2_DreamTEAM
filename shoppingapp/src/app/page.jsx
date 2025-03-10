@@ -11,7 +11,12 @@ import "./LandingPage.css";
 
 const LOGIN_MUTATION = gql`
   mutation Login($username: String!, $password: String!) {
-    login(username: $username, password: $password)
+    login(username: $username, password: $password) {
+      success
+      username
+      token
+      errors
+    }
   }
 `;
 
@@ -22,13 +27,43 @@ const LandingPage = () => {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const categoriesRef = useRef(null);
 
-  const scrollLeft = () => {
-    categoriesRef.current?.scrollBy({ left: -300, behavior: "smooth" });
+  // ✅ Fix: Ensure username & password are passed correctly
+  const handleLogin = async (username, password) => {
+    if (!username || !password) {
+      alert("Username and password are required.");
+      return;
+    }
+
+    try {
+      console.log("Attempting login with:", { username, password });
+
+      // ✅ Pass variables correctly
+      const variables = { username, password };
+      const data = await request(GRAPHQL_ENDPOINT, LOGIN_MUTATION, variables);
+
+      console.log("Login response:", data);
+
+      const loginResult = data?.login;
+
+      if (loginResult?.success && loginResult?.token) {
+        console.log("Login successful!");
+
+        // ✅ Use the AuthContext login function to store session
+        login(loginResult.username, loginResult.token);
+
+        // ✅ Close login modal on success
+        setLoginModalOpen(false);
+      } else {
+        alert(loginResult?.errors || "Login failed!");
+      }
+    } catch (error) {
+      console.error("GraphQL Login Error:", error);
+      alert("An error occurred. Please try again.");
+    }
   };
 
-  const scrollRight = () => {
-    categoriesRef.current?.scrollBy({ left: 300, behavior: "smooth" });
-  };
+  const scrollLeft = () => categoriesRef.current?.scrollBy({ left: -300, behavior: "smooth" });
+  const scrollRight = () => categoriesRef.current?.scrollBy({ left: 300, behavior: "smooth" });
 
   return (
     <div className="landing-page">
@@ -46,18 +81,24 @@ const LandingPage = () => {
         <div className="search-bar">
           <input type="text" placeholder="Search products..." />
           <button className="search-button">
-            <Image src="/maginifying.png" alt="Search" width={18} height={18} />
+            <Image src="/magnifying.png" alt="Search" width={18} height={18} />
           </button>
         </div>
         <div className="icons">
-          <button className="login-btn" onClick={() => setLoginModalOpen(true)}>
-            <Image src="/login-img.png" alt="Login" width={22} height={22} />
-          </button>
+          {isAuthenticated ? (
+            <button className="login-btn" onClick={() => alert("Already logged in!")}>
+              <Image src="/user-icon.png" alt="User" width={22} height={22} />
+            </button>
+          ) : (
+            <button className="login-btn" onClick={() => setLoginModalOpen(true)}>
+              <Image src="/login-img.png" alt="Login" width={22} height={22} />
+            </button>
+          )}
         </div>
       </nav>
 
       {/* Login Modal */}
-      <LoginModal isOpen={isLoginModalOpen} closeModal={() => setLoginModalOpen(false)} onLoginSuccess={login} />
+      <LoginModal isOpen={isLoginModalOpen} closeModal={() => setLoginModalOpen(false)} onLoginSuccess={handleLogin} />
 
       {/* Hero Section */}
       <section className="hero">
@@ -80,48 +121,6 @@ const LandingPage = () => {
         <h3 className="section-title">Browse Categories</h3>
         <CategoryList />
       </section>
-
-      {/* Popular Products */}
-      <section className="popular-categories">
-        <h3 className="section-title">Popular Products</h3>
-        <div className="categories-wrapper">
-          <div className="category-grid">
-            {[...Array(8)].map((_, index) => (
-              <div key={index} className="category-item">
-                <Image src={`/gallery_${index + 1}.jpg`} alt={`Category ${index + 1}`} width={300} height={350} className="category-img" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="footer">
-        <div className="footer-container">
-          <div className="footer-left">
-            <div className="footer-logo-container">
-              <Image src="/company-logo.png" alt="Company Logo" width={35} height={35} />
-              <span className="footer-logo">LUXORA</span>
-            </div>
-            <p className="footer-address">Address of the Company<br />P.O. Box</p>
-          </div>
-          <ul className="footer-links">
-            <li><Link href="#">Home</Link></li>
-            <li><Link href="./Shop">Shop</Link></li>
-            <li><Link href="./Contact">Contact</Link></li>
-          </ul>
-          <div className="footer-right">
-            <Link href="#"><Image src="/phone.png" alt="Phone" width={30} height={22} /></Link>
-            <Link href="https://x.com/luxora_inc?lang=en"><Image src="/X.png" alt="X" width={22} height={22} /></Link>
-            <Link href="https://www.instagram.com/luxoraofficial/?hl=en"><Image src="/instagram.png" alt="Instagram" width={22} height={22} /></Link>
-          </div>
-        </div>
-        <div className="privacy-policy">
-          <Link href="#">Privacy & Policy</Link>
-        </div>
-        <hr className="footer-divider" />
-        <p className="footer-bottom-text">All rights reserved</p>
-      </footer>
     </div>
   );
 };
