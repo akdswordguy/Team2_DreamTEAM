@@ -1,0 +1,87 @@
+/* Parent container for the Product Detail Page */
+.product-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Back Button */
+.back-link {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.back-link a {
+  text-decoration: none;
+  color: #0070f3;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+}
+
+/* Main Product Details Section */
+.product-details-container {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Product Image */
+.product-image-container {
+  flex: 1;
+}
+
+.product-detail-image {
+  border-radius: 8px;
+  width: 100%;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Product Details Section */
+.product-details {
+  flex: 1;
+  padding: 20px;
+}
+
+.product-name {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.product-description {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.product-price {
+  font-size: 20px;
+  font-weight: bold;
+  color: #d18a4d;
+  display: block;
+  margin-bottom: 20px;
+}
+
+/* Add to Cart Button */
+.add-to-cart-btn {
+  padding: 10px 20px;
+  background-color: #d18a4d;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #a57245;
+}

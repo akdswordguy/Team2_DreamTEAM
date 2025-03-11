@@ -1,0 +1,95 @@
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it overlays other content */
+  }
+  
+  /* Modal Container */
+  .login-modal {
+    background: white;
+    width: 400px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    position: relative;
+  }
+  
+  /* Modal Header */
+  .login-modal h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Input Fields */
+  .login-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+  
+  /* Input Field Focus State */
+  .login-input:focus {
+    border-color: #a57245;
+  }
+  
+  /* Submit Button */
+  .btn.login-submit {
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    background-color: #a57245; /* Primary color */
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  /* Button Hover State */
+  .btn.login-submit:hover {
+    background-color: #7d5229; /* Darker shade of primary color */
+  }
+  
+  /* Signup Text */
+  .signup-text {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .signup-text a {
+    color: #a57245;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .signup-text a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Error Text */
+  .error-text {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  

@@ -1,0 +1,176 @@
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between; /* Space between logo and other elements */
+  align-items: center;
+  padding: 10px 50px;
+  background: white;
+
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo Container */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between logo and text */
+}
+
+.logo-container img {
+  width: 35px;
+  height: 35px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  font-family: "Poppins", sans-serif; /* Alternative to match the overall font */
+}
+
+/* Navigation Links */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 50px;
+  font-family: "Italiana", serif;
+  justify-content: center;
+  flex-grow: 1;
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+}
+
+.nav-links li {
+  font-size: 21px;
+  font-weight: 500;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease; /* Smooth hover effect */
+}
+
+.nav-links li a:hover {
+  color: #a57245; /* Highlight link hover */
+}
+
+/* Search Bar */
+.search-bar {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 5px 10px;
+  overflow: hidden;
+  background: white;
+  margin-left: auto;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  padding: 8px;
+  font-size: 14px;
+  flex-grow: 1; /* Flexible width */
+}
+
+.search-bar input::placeholder {
+  color: #aaa; /* Placeholder color */
+}
+
+.search-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding-left: 10px;
+}
+
+.search-button img {
+  width: 18px;
+  height: 18px;
+}
+
+/* Icons */
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: 20px;
+}
+
+/* Login Button */
+.login-btn {
+  margin-top: 5px;;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #ffffff; /* Button background */
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: "Poppins", sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+
+/* User Info Block (for logged-in users) */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between avatar and name */
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%; /* Circular avatar */
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.username {
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+  white-space: nowrap; /* Prevent wrapping */
+  cursor: pointer;
+}
+
+.username:hover {
+  color: #a57245; /* Highlight username on hover */
+}
+
+/* Logout Button */
+.logout-btn {
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  color: #a57245;
+  padding: 8px 15px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #f3f3f3; /* Subtle hover background */
+  color: #845339; /* Darker text */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none; /* Hide links for smaller screens */
+  }
+
+  .navbar {
+    justify-content: space-between;
+  }
+}
