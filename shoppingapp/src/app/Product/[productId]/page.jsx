@@ -1,24 +1,24 @@
 "use client";
 
 import React from "react";
-import { useParams } from "next/navigation"; // Extract `productId` from the URL
-import { useQuery } from "@apollo/client"; // Apollo client for GraphQL queries
+import { useParams } from "next/navigation";
+import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
-import { useCart } from "../../context/CartContext"; // Cart context to add items to the cart
-import { productClient } from "../../utils/apollo-client"; // Apollo Client instance
-import { GET_PRODUCT_DETAILS } from "../../graphql/productQueries"; // GraphQL query for product details
+import { useCart } from "../../context/CartContext";
+import { productClient } from "../../utils/apollo-client";
+import { GET_PRODUCT_DETAILS } from "../../graphql/productQueries";
 import "./styles.css";
 
 const ProductPage = () => {
-  const { productId } = useParams(); // Extract the product ID from the URL
-  const { addItem } = useCart(); // Access the `addItem` function to allow adding products to the cart
+  const { productId } = useParams();
+  const { addItem } = useCart();
 
   // Apollo Client Query to fetch product details by ID
   const { data, loading, error } = useQuery(GET_PRODUCT_DETAILS, {
-    variables: { id: parseInt(productId) }, // Pass productId dynamically
-    skip: !productId, // Skip query if productId is missing
-    client: productClient, // Use custom Apollo client instance
+    variables: { id: parseInt(productId) },
+    skip: !productId,
+    client: productClient,
   });
 
   // Handle loading and error states
@@ -34,22 +34,26 @@ const ProductPage = () => {
     name = "Unknown Product",
     description = "No description available.",
     price = "N/A",
-    imageUrl = "/default-product.jpg", // Fallback to default image
+    imageUrl = "/default-product.jpg",
   } = product;
 
   return (
     <div className="product-page">
-      {/* Back to Category/Product Grid */}
-      <div className="back-link">
-        {/* Link back to the category page with the category ID */}
+      {/* Back Button */}
+      <div className="back-button">
         <Link href={`/category/${category.id}`}>
-          ← Back to {category.name || "Products"}
+          <button className="back-btn"> Back to {category.name || "Products"}</button>
         </Link>
       </div>
 
       {/* Product Section */}
-      <div className="product-details-container">
-        {/* Product Image */}
+      <div className="product-container">
+        {/* Left Section: Product Name */}
+        <div className="product-name-section">
+          <h1 className="product-title">{name}</h1>
+        </div>
+
+        {/* Center Section: Product Image */}
         <div className="product-image-container">
           <Image
             src={imageUrl}
@@ -60,20 +64,31 @@ const ProductPage = () => {
           />
         </div>
 
-        {/* Product Details */}
+        {/* Right Section: Product Details */}
         <div className="product-details">
-          <h1 className="product-name">{name}</h1>
           <p className="product-description">{description}</p>
           <span className="product-price">${price}</span>
-
-          {/* Add to Cart */}
           <button
             className="add-to-cart-btn"
-            onClick={() => addItem(product)} // Add product to cart
+            onClick={() => addItem(product)}
           >
             Add to Cart
           </button>
+          {/* Size Selection Buttons */}
+          <div className="size-buttons">
+            <button className="size-btn">S</button>
+            <button className="size-btn">M</button>
+            <button className="size-btn">L</button>
+            <button className="size-btn">XL</button>
+          </div>
         </div>
+      </div>
+
+      {/* Bottom Design Effects */}
+      <div className="design-effects">
+        <div className="effect-circle"></div>
+        <div className="effect-rectangle"></div>
+        <div className="effect-semi-circle"></div>
       </div>
     </div>
   );
