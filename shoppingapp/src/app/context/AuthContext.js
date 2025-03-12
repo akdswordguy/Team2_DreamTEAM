@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
@@ -8,34 +8,41 @@ export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     isLoggedIn: false,
     username: null,
-    email: null, // Added email
+    email: null,
   });
 
+  // Load auth state from localStorage on mount
+  useEffect(() => {
+    const storedAuth = localStorage.getItem("auth");
+    if (storedAuth) {
+      setAuth(JSON.parse(storedAuth));
+    }
+  }, []);
+
   const login = (username, email) => {
-    setAuth({
+    const newAuthState = {
       isLoggedIn: true,
       username,
-      email, // Store email on login
-    });
+      email,
+    };
+    setAuth(newAuthState);
+    localStorage.setItem("auth", JSON.stringify(newAuthState)); // Save to localStorage
   };
 
   const logout = () => {
     setAuth({
       isLoggedIn: false,
       username: null,
-      email: null, // Clear email on logout
+      email: null,
     });
+    localStorage.removeItem("auth"); // Clear storage on logout
   };
 
-  const value = {
-    ...auth,
-    login,
-    logout,
-  };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ ...auth, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);

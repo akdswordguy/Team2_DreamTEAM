@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { request, gql } from "graphql-request";
-import AuthContext from "./AuthContext";
+// import AuthContext from "./AuthContext_old";
 import LoginModal from "./components/LoginModal";
 import CategoryList from "./components/CategoryList";
 import "./LandingPage.css";

@@ -7,7 +7,7 @@ import "./style.css";  // External CSS
 import { request, gql } from "graphql-request";
 import { useRouter } from "next/navigation";
 
-import AuthContext from "../AuthContext"; 
+import AuthContext from "../AuthContext_old"; 
 
 const LOGIN_MUTATION = gql`
   mutation Login($username: String!, $password: String!) {

@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import "react-image-crop/dist/ReactCrop.css";
 import "./profileCreation.css";
-import AuthContext from "../AuthContext"; 
+// import AuthContext from "../AuthContext_old"; 
 
 const CreateProfile = () => {
   const [showLogin, setShowLogin] = useState(false);

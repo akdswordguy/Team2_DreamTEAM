@@ -7,8 +7,9 @@ import "./Cart.css";
 import NavBar from "../components/NavBar"; // Import NavBar component
 
 const CartPage = () => {
-  const { cart, removeItem, totalCost } = useCart();
   const { isLoggedIn, email } = useAuth(); // Get email from AuthContext
+  const { cart, removeItem, totalCost, increaseQuantity, decreaseQuantity } = useCart();
+
 
   const handleCheckout = async () => {
     if (!isLoggedIn) {
