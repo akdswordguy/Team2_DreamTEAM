@@ -12,6 +12,7 @@ const LOGIN_MUTATION = gql`
     login(username: $username, password: $password) {
       success
       username
+      email  
       token
       errors
     }
@@ -25,13 +26,14 @@ const LoginModal = ({ isOpen, closeModal, onLoginSuccess }) => {
   });
   const [loginError, setLoginError] = useState(null);
   const { login } = useAuth();
-  // Use Apollo Client for GraphQL login mutation
+
+  // GraphQL Mutation
   const [loginMutation, { loading }] = useMutation(LOGIN_MUTATION, {
-    client: authClient, // Pass authClient here
+    client: authClient, 
   });
 
   const handleLogin = async () => {
-    setLoginError(null); // Clear any previous errors
+    setLoginError(null);
 
     try {
       const { data } = await loginMutation({
@@ -39,17 +41,17 @@ const LoginModal = ({ isOpen, closeModal, onLoginSuccess }) => {
       });
 
       if (data?.login?.success) {
-        login(data.login.username);
-        onLoginSuccess(); // Trigger successful login
-        closeModal(); // Close the modal
-        alert(`Welcome back, ${data?.login?.username}!`);
+        login(data.login.username, data.login.email); // ✅ Store username & email in context
+        onLoginSuccess();
+        closeModal();
+        alert(`Welcome back, ${data.login.username}!`);
       } else {
         setLoginError(
           data?.login?.errors || "Invalid credentials, please try again."
         );
       }
     } catch (err) {
-      console.error(err); // Log errors for debugging
+      console.error("Login error:", err);
       setLoginError("An error occurred. Please try again.");
     }
   };
@@ -60,6 +62,7 @@ const LoginModal = ({ isOpen, closeModal, onLoginSuccess }) => {
     <div className="modal-overlay" onClick={closeModal}>
       <div className="login-modal" onClick={(e) => e.stopPropagation()}>
         <h2>Login</h2>
+        
         <input
           type="text"
           placeholder="Username"
@@ -81,7 +84,7 @@ const LoginModal = ({ isOpen, closeModal, onLoginSuccess }) => {
         <button
           className="btn login-submit"
           onClick={handleLogin}
-          disabled={loading} // Disable button during loading
+          disabled={loading}
         >
           {loading ? "Logging in..." : "Login"}
         </button>

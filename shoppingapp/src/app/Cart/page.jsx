@@ -1,32 +1,62 @@
 "use client";
-
 import React from "react";
 import { useCart } from "../context/CartContext"; // Import Cart Context
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext"; // Import Auth Context
 import "./Cart.css";
 
 const CartPage = () => {
-  const { cart, removeItem, totalCost } = useCart(); // Updated destructuring
-  const { isLoggedIn, logout, username } = useAuth();
-  const handleCheckout = () => {
+  const { cart, removeItem, totalCost } = useCart();
+  const { isLoggedIn, email } = useAuth(); // Get email from AuthContext
+
+  const handleCheckout = async () => {
     if (!isLoggedIn) {
-      // Alert if user is not logged in
       alert("Please log in to proceed with checkout.");
-    } else {
-      // Proceed with checkout if logged in
-      alert("Thank you for your purchase! Proceeding to checkout...");
+      return;
+    }
+
+    if (!email) {
+      alert("User email not found. Please try logging in again.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/auth_app/graphql/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: `
+            mutation {
+              checkout(email: "${email}") {
+                message
+                success
+              }
+            }
+          `,
+        }),
+      });
+
+      const result = await response.json();
+      if (result?.data?.checkout?.success) {
+        alert(result.data.checkout.message);
+      } else {
+        alert("Failed to initiate checkout. Please try again.");
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      alert("An error occurred while processing your order.");
     }
   };
+
   return (
     <div className="cart-page">
       <h1>Your Cart</h1>
 
-      {/* Check if the cart is empty */}
       {cart.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
         <div>
-          {/* List Cart Items */}
           <ul className="cart-items">
             {cart.map((item) => (
               <li key={item.id} className="cart-item">
@@ -36,7 +66,7 @@ const CartPage = () => {
                   <p>Quantity: {item.quantity}</p>
                 </div>
                 <button
-                  onClick={() => removeItem(item.id)} // Use removeItem from CartContext
+                  onClick={() => removeItem(item.id)}
                   className="remove-btn"
                   aria-label={`Remove ${item.name} from cart`}
                 >
@@ -46,7 +76,6 @@ const CartPage = () => {
             ))}
           </ul>
 
-          {/* Total Price */}
           <h2>Total Price: ${totalCost}</h2>
           <button className="checkout-btn" onClick={handleCheckout}>
             Checkout

@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from typing import Optional
 from chowkidar.wrappers import issue_tokens_on_login, revoke_tokens_on_logout
 from chowkidar.authentication import authenticate
+from django.core.mail import send_mail
 
 logger = logging.getLogger(__name__)
 
@@ -17,6 +18,7 @@ class RegisterResponse:
 class LoginResult:
     success: bool
     username: Optional[str]
+    email: Optional[str]
     token: Optional[str]
     errors: Optional[str]
 
@@ -29,6 +31,11 @@ class SignupInput:
 
 @strawberry.type
 class SignupResponse:
+    message: str
+    success: bool
+
+@strawberry.type
+class CheckoutResponse:
     message: str
     success: bool
 
@@ -84,6 +91,7 @@ class AuthMutations:
             return LoginResult(
                 success=False,
                 username=request.user.username,
+                email=request.user.email,
                 token=None,
                 errors="You are already logged in!",
             )
@@ -92,15 +100,18 @@ class AuthMutations:
         if user:
             jwt_access_token = request.COOKIES.get("JWT_ACCESS_TOKEN")
             logger.info(f"User {user.username} logged in successfully.")
+            print(f"User {user.username} logged in with email: {user.email}")  # Print user email
+
             return LoginResult(
                 success=True,
                 username=user.username,
+                email=user.email,
                 token=jwt_access_token,
                 errors=None,
             )
 
         logger.warning("Login failed: Invalid credentials.")
-        return LoginResult(success=False, username=None, token=None, errors="Invalid credentials")
+        return LoginResult(success=False, username=None, email=None, token=None, errors="Invalid credentials")
 
     @strawberry.mutation
     @revoke_tokens_on_logout
@@ -108,3 +119,19 @@ class AuthMutations:
         info.context["LOGOUT_USER"] = True
         logger.info("User logged out successfully.")
         return True
+
+    @strawberry.mutation
+    def checkout(self, email: str) -> CheckoutResponse:
+        try:
+            send_mail(
+                subject="Order Initiated",
+                message="Your order has been successfully initiated. We will update you soon!",
+                from_email="akdattingal@gmail.com",
+                recipient_list=[email],
+                fail_silently=False,
+            )
+            logger.info(f"Order initiation email sent to {email}")
+            return CheckoutResponse(message="Order initiation email sent successfully!", success=True)
+        except Exception as e:
+            logger.error(f"Failed to send order initiation email: {str(e)}")
+            return CheckoutResponse(message="Failed to send order initiation email.", success=False)

@@ -96,6 +96,12 @@ TEMPLATES = [
         },
     },
 ]
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "akdattingal@gmail.com"
+EMAIL_HOST_PASSWORD = "aeny jtjz iniy qkjl "  # Use App Password, NOT email password
 
 JWT_ACCESS_TOKEN_EXPIRATION_DELTA = timezone.timedelta(seconds=60)
 JWT_REFRESH_TOKEN_EXPIRATION_DELTA = timezone.timedelta(days=7)

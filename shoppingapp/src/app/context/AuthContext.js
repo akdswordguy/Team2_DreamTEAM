@@ -8,12 +8,14 @@ export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     isLoggedIn: false,
     username: null,
+    email: null, // Added email
   });
 
-  const login = (username) => {
+  const login = (username, email) => {
     setAuth({
       isLoggedIn: true,
       username,
+      email, // Store email on login
     });
   };
 
@@ -21,6 +23,7 @@ export const AuthProvider = ({ children }) => {
     setAuth({
       isLoggedIn: false,
       username: null,
+      email: null, // Clear email on logout
     });
   };
 
