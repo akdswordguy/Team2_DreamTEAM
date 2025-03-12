@@ -34,10 +34,10 @@ const NavBar = ({ setShowLogin }) => {
           <Link href="/">Home</Link>
         </li>
         <li>
-          <Link href="/shop">Shop</Link>
+          <Link href="/profileCreation">Profile</Link>
         </li>
         <li>
-          <Link href="/contact">Contact</Link>
+          <Link href="/Contact">Contact</Link>
         </li>
       </ul>
       <div className="search-bar">

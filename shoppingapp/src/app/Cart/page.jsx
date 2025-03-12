@@ -2,7 +2,9 @@
 import React from "react";
 import { useCart } from "../context/CartContext"; // Import Cart Context
 import { useAuth } from "../context/AuthContext"; // Import Auth Context
+import Image from "next/image";
 import "./Cart.css";
+import NavBar from "../components/NavBar"; // Import NavBar component
 
 const CartPage = () => {
   const { cart, removeItem, totalCost } = useCart();
@@ -50,39 +52,85 @@ const CartPage = () => {
   };
 
   return (
-    <div className="cart-page">
-      <h1>Your Cart</h1>
+    <div className="cart-container">
 
-      {cart.length === 0 ? (
-        <p>Your cart is empty.</p>
-      ) : (
-        <div>
-          <ul className="cart-items">
-            {cart.map((item) => (
-              <li key={item.id} className="cart-item">
-                <div>
-                  <h3>{item.name}</h3>
-                  <p>Price: ${item.price}</p>
-                  <p>Quantity: {item.quantity}</p>
+      <h1 className="cart-title">Shopping Cart</h1>
+      <div className="cart-content">
+        {/* Cart Items Section */}
+        <div className="cart-items">
+          {cart.length > 0 ? (
+            cart.map((item) => (
+              <div key={item.id} className="cart-item">
+
+                <div className="cart-details">
+                  <p className="cart-product-name">{item.name}</p>
                 </div>
-                <button
-                  onClick={() => removeItem(item.id)}
-                  className="remove-btn"
-                  aria-label={`Remove ${item.name} from cart`}
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
 
-          <h2>Total Price: ${totalCost}</h2>
-          <button className="checkout-btn" onClick={handleCheckout}>
-            Checkout
-          </button>
+                <div className="cart-actions">
+                  <p className="cart-product-price">${item.price.toFixed(2)}</p>
+                  <div className="cart-quantity">
+                    <button
+                      className="qty-btn minus"
+                      onClick={() => decreaseQuantity(item.id)}
+                    >
+                      -
+                    </button>
+                    <span className="qty-count">{item.quantity}</span>
+                    <button
+                      className="qty-btn plus"
+                      onClick={() => increaseQuantity(item.id)}
+                    >
+                      +
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => removeItem(item.id)}
+                    >
+                      <Image
+                        src="/wastebin.png"
+                        alt="Delete"
+                        width={24}
+                        height={24}
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="empty-cart">Your cart is empty.</p>
+          )}
         </div>
-      )}
-    </div>
+
+        {/* Checkout Section */}
+        <div className="checkout-wrapper">
+          <div className="checkout-section">
+            <h2 className="checkout-title">Order Summary</h2>
+            <p className="checkout-text">
+              Subtotal: <strong>${totalCost.toFixed(2)}</strong>
+            </p>
+            <p className="checkout-text">
+              Shipping: <strong>Free</strong>
+            </p>
+            <p className="checkout-total">
+              Total: <strong>${totalCost.toFixed(2)}</strong>
+            </p>
+            <button className="checkout-btn" onClick={handleCheckout}>
+              Proceed to Checkout
+            </button>
+
+            
+          </div>
+          {/* Video Section (Placed on the Right) */}
+<div className="video-container">
+<video className="checkout-video" autoPlay loop muted playsInline>
+<source src="/cart-vid.webm" type="video/webm" />
+Your browser does not support the video tag.
+</video>
+</div>
+</div>
+        </div>
+      </div>
   );
 };
 

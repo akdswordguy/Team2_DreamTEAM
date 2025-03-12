@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import "./contact.css";
+import NavBar from "../components/NavBar";
 
 const ContactUs = () => {
   const pathname = usePathname();
@@ -26,24 +27,7 @@ const ContactUs = () => {
   
   return (
     <div className="signup-page">
-      {/* Navbar */}
-      <nav className="navbar">
-        <div className="logo-container">
-          <Image src="/company-logo.png" alt="Company Logo" width={35} height={35} />
-          <div className="logo">LUXORA</div>
-        </div>
-        <ul className="nav-links">
-          <li><Link href="/">Home</Link></li>
-          <li><Link href="./profileCreation">Profile</Link></li>
-          <li><Link href="./Contact">Contact</Link></li>
-        </ul>
-        <div className="search-bar">
-          <input type="text" placeholder="Search products..." />
-          <button className="search-button">
-            <Image src="/maginifying.png" alt="Search" width={18} height={18} />
-          </button>
-        </div>
-      </nav>
+      <NavBar></NavBar>
 
       {/* 📌 Map Section */}
       <div className="map">

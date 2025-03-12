@@ -10,6 +10,7 @@ import Link from "next/link";
 import { productClient } from "../../utils/apollo-client";
 import { GET_CATEGORY_PRODUCTS } from "../../graphql/categoryQueries";
 import "./style.css";
+import NavBar from "@/app/components/NavBar";
 
 const CategoryPage = () => {
   const [selectedFilters, setSelectedFilters] = useState({
@@ -20,7 +21,7 @@ const CategoryPage = () => {
   const { categoryId } = useParams();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 8;
+  const productsPerPage = 9;
   const { addItem } = useCart(); // Add product to cart function
   // Toggle category filter and update URL
   const toggleFilter = (type, value, id) => {
@@ -88,8 +89,16 @@ const CategoryPage = () => {
     currentPage * productsPerPage
   );
 
+  const getRandomRating = () => {
+    const starsCount = Math.floor(Math.random() * 3) + 3; // 1 to 5 stars
+    const reviewsCount = Math.floor(Math.random() * 46) + 5; // 5 to 50 reviews
+    const stars = "★".repeat(starsCount) + "☆".repeat(5 - starsCount); // Full and empty stars
+    return { stars, reviewsCount };
+  };
+
   return (
     <div className="category-page">
+      <NavBar></NavBar>
       <div className="banner-container">
         <div className="all-products">
           <Link href="#">All Products </Link>
@@ -134,32 +143,39 @@ const CategoryPage = () => {
 
         <div className="right-section">
           <div className="product-grid">
-            {displayedProducts.map((product) => (
-              <div key={product.id} className="product-card">
-                <div className="image-container">
+            {displayedProducts.map((product) => {
+              const { stars, reviewsCount } = getRandomRating(); // Generate random rating per product
+              return (
+                <div key={product.id} className="product-card">
+                  <div className="image-container">
                   <Link href={`/Product/${product.id}`}>
                     <Image
-                      src={product.imageUrl || "/default-product.jpg"} // Fallback to default image
+                      src={product.imageUrl || "/default-product.jpg"}
                       alt={product.name}
                       width={300}
                       height={350}
+                      style={{ objectFit: "cover" }}
                       className="product-image"
                     />
-                  </Link>
+                    </Link>
+                  </div>
+                  <div className="product-details">
+                    <span className="product-name">{product.name}</span>
+                    <span className="product-price">${product.price}</span>
+                    <div className="product-rating">
+                      <span className="stars">{stars}</span>
+                      <span>({reviewsCount})</span>
+                    </div>
+                  </div>
+                  <button
+                      className="add-to-cart-btn"
+                      onClick={() => addItem(product)} // Add product to cart
+                      >
+                      Add to Cart
+                  </button>
                 </div>
-                <div className="product-details">
-                  <span className="product-name">{product.name}</span>
-                  <span className="product-price">${product.price}</span>
-                </div>
-                {/* Add to Cart Button */}
-                <button
-                  className="add-to-cart-btn"
-                  onClick={() => addItem(product)} // Add product to cart
-                >
-                  Add to Cart
-                </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="pagination">
