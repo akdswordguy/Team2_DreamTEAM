@@ -1,4 +1,5 @@
 // No "use client" since this is primarily a server component for global metadata and structure.
+"use client"
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientProvider from "./components/ClientProvider";

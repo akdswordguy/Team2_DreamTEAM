@@ -1,34 +1,35 @@
 "use client";
-import React, { useState,useContext, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Profile from "./profile";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import "react-image-crop/dist/ReactCrop.css";
 import "./profileCreation.css";
-// import AuthContext from "../AuthContext_old"; 
+import { useAuth } from "../context/AuthContext";
 
 const CreateProfile = () => {
   const [showLogin, setShowLogin] = useState(false);
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { username, email, isLoggedIn, logout } = useAuth();
   const pathname = usePathname();
-  
-    useEffect(() => {
-      if (typeof window !== "undefined") {
-        const lastVisited = sessionStorage.getItem("lastVisitedPage");
-        const hasReloaded = sessionStorage.getItem("hasReloaded");
-    
-        if (lastVisited === pathname && hasReloaded !== "true") {
-          sessionStorage.setItem("hasReloaded", "true");
-          window.location.reload();
-        } else {
-          sessionStorage.setItem("hasReloaded", "false");
-        }
-    
-        sessionStorage.setItem("lastVisitedPage", pathname);
-      }
-    }, [pathname]);
+  const router = useRouter();
 
+  // Redirect to login page if user is not logged in
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/login");
+    }
+  }, [isLoggedIn, router]);
+
+  useEffect(() => {
+    console.log("ProfilePage - User Data:", { username, email, isLoggedIn });
+  }, [username, email, isLoggedIn]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("lastVisitedPage", pathname);
+    }
+  }, [pathname]);
 
   return (
     <div className="signup">
@@ -39,9 +40,9 @@ const CreateProfile = () => {
           <div className="logo">LUXORA</div>
         </div>
         <ul className="nav-links">
-          <li><Link href="./">Home</Link></li>
-          <li><Link href="./profileCreation">Profile</Link></li>
-          <li><Link href="./Contact">Contact</Link></li>
+          <li><Link href="/">Home</Link></li>
+          <li><Link href="/profileCreation">Profile</Link></li>
+          <li><Link href="/Contact">Contact</Link></li>
         </ul>
         <div className="search-bar">
           <input type="text" placeholder="Search products..." />
@@ -64,7 +65,7 @@ const CreateProfile = () => {
           <div className="signup-container">
             <h2 className="section-title">Personal Information</h2>
             <div className="form-container">
-              {/* Profile Upload Section - Positioned on Left */}
+              {/* Profile Upload Section */}
               <div className="profile-upload">
                 <Profile />
               </div>
@@ -85,11 +86,11 @@ const CreateProfile = () => {
                 </div>
                 <div className="input-group">
                   <label htmlFor="email">Mail ID</label>
-                  <input type="email" id="email" placeholder="example@mail.com" />
+                  <input type="email" id="email" defaultValue={email} readOnly />
                 </div>
                 <div className="input-group">
                   <label htmlFor="username">Username</label>
-                  <input type="text" id="username" placeholder="Username" />
+                  <input type="text" id="username" defaultValue={username} readOnly />
                 </div>
               </div>
             </div>
@@ -129,24 +130,22 @@ const CreateProfile = () => {
             <div className="button-group">
               <button className="update-profile-button">Update Profile</button>
               <button className="logout-button" onClick={() => {
-              logout();
-               alert("You have been logged out successfully!");
-                }} >Log Out</button> 
-              
+                logout();
+                alert("You have been logged out successfully!");
+              }}>Log Out</button>
             </div>
           </div>
         </div>
 
         {/* Right Content - Video Placeholder */}
-            <div className="right-section">
-    <video className="video-content" autoPlay loop muted playsInline>
-        <source src="./animation.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-    </video>
-    </div>
-
+        <div className="right-section">
+          <video className="video-content" autoPlay loop muted playsInline>
+            <source src="/animation.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </div>
+    </div>
   );
 };
 
