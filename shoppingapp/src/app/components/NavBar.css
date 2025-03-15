@@ -103,7 +103,7 @@
 
 /* Login Button */
 .login-btn {
-  margin-top: 5px;;
+  margin-top: 5px;
   display: flex;
   align-items: center;
   gap: 5px;
@@ -117,7 +117,6 @@
   font-family: "Poppins", sans-serif;
   transition: background-color 0.3s ease;
 }
-
 
 /* User Info Block (for logged-in users) */
 .user-info {
@@ -148,26 +147,40 @@
 
 /* Logout Button */
 .logout-btn {
-  background: none;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  color: #a57245;
-  padding: 8px 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 40px;
+  background: linear-gradient(135deg, #ff8661, #ff854d); 
+  border: none; 
+  border-radius: 25px; 
+  color: #ffffff; 
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600; 
+  font-family: "Poppins", sans-serif; 
+  text-transform: uppercase;
+  letter-spacing: 0.5px; 
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease; 
+  box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3); 
 }
 
 .logout-btn:hover {
-  background: #f3f3f3; /* Subtle hover background */
-  color: #845339; /* Darker text */
+  background: linear-gradient(135deg, #ff8f44, #ca602e);
+  transform: translateY(-2px); 
+  box-shadow: 0 6px 20px rgba(255, 77, 77, 0.5); 
+}
+
+.logout-btn:active {
+  transform: translateY(1px); 
+  box-shadow: 0 2px 10px rgba(255, 77, 77, 0.2); 
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .nav-links {
-    display: none; /* Hide links for smaller screens */
+    display: none; 
   }
 
   .navbar {

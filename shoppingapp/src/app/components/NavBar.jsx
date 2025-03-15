@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import "./NavBar.css";
@@ -12,9 +12,17 @@ const NavBar = ({ setShowLogin }) => {
   const { isLoggedIn, logout, username } = useAuth();
   const { totalQuantity } = useCart();
   const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
+
+  // Ensure rendering happens only on the client after hydration
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const handleCartClick = () => {
     router.push("/Cart"); // Navigate to the Cart page
   };
+
   return (
     <nav className="navbar">
       {/* Logo Section */}
@@ -47,30 +55,33 @@ const NavBar = ({ setShowLogin }) => {
         </button>
       </div>
 
-      {/* Login/Logout Buttons */}
+      {/* Icons Section */}
       <div className="icons">
+        {/* Cart Button */}
         <button className="cart-btn" onClick={handleCartClick}>
           <Image src="/cart-icon.png" alt="Cart" width={22} height={22} />
-          {totalQuantity > 0 && (
+          {isClient && totalQuantity > 0 && (
             <span className="cart-count">{totalQuantity}</span>
           )}
         </button>
 
-        {isLoggedIn ? (
-          <div className="user-info">
-            <span className="welcome-text">Welcome, {username}!</span>{" "}
-            {/* Display Username */}
-            <button className="logout-btn" onClick={logout}>
-              <Image
-                src="/logout-img.png"
-                alt="Logout"
-                width={22}
-                height={22}
-              />
+        {/* Login/Logout Section */}
+        {isClient ? (
+          isLoggedIn ? (
+            <div className="user-info">
+              <span className="welcome-text">Welcome, {username}!</span>
+              <button className="logout-btn" onClick={logout}>
+                Log Out
+              </button>
+            </div>
+          ) : (
+            <button className="login-btn" onClick={() => setShowLogin(true)}>
+              <Image src="/login-img.png" alt="Login" width={22} height={22} />
             </button>
-          </div>
+          )
         ) : (
-          <button className="login-btn" onClick={() => setShowLogin(true)}>
+          // Fallback during SSR to avoid mismatch
+          <button className="login-btn">
             <Image src="/login-img.png" alt="Login" width={22} height={22} />
           </button>
         )}

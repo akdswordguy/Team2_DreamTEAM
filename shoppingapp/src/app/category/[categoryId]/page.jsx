@@ -285,8 +285,8 @@ const CategoryPage = () => {
               <Image
                 src="/instagram.png"
                 alt="Instagram"
-                width={22}
-                height={22}
+                width={14}
+                height={14}
               />
             </Link>
           </div>
