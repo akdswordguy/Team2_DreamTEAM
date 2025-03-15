@@ -5,7 +5,6 @@
   align-items: center;
   padding: 10px 50px;
   background: white;
-
   width: 100%;
   top: 0;
   z-index: 1000;
@@ -166,11 +165,137 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .nav-links {
-    display: none; /* Hide links for smaller screens */
+  .navbar {
+    padding: 10px 20px;
+    justify-content: space-between;
   }
 
+  .logo-container img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  .nav-links {
+    display: none; /* Hide navigation links on smaller screens */
+  }
+
+  .search-bar {
+    margin-left: 0;
+    width: 100%;
+    max-width: 200px; /* Prevent it from being too wide */
+    padding: 4px 8px;
+  }
+
+  .search-bar input {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .search-button img {
+    width: 16px;
+    height: 16px;
+  }
+
+  .icons {
+    margin-left: 10px;
+    gap: 10px;
+  }
+
+  .icons img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .login-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .user-info {
+    gap: 8px;
+  }
+
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+  }
+
+  .username {
+    font-size: 14px;
+  }
+
+  .logout-btn {
+    width: 80px;
+    height: 32px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
   .navbar {
-    justify-content: space-between;
+    padding: 8px 10px;
+  }
+
+  .logo-container img {
+    width: 25px;
+    height: 25px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  .search-bar {
+    max-width: 150px;
+    padding: 3px 5px;
+  }
+
+  .search-bar input {
+    font-size: 10px;
+    padding: 4px;
+  }
+
+  .search-button img {
+    width: 14px;
+    height: 14px;
+  }
+
+  .icons {
+    margin-left: 5px;
+    gap: 8px;
+  }
+
+  .icons img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .login-btn {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+
+  .user-info {
+    gap: 6px;
+  }
+
+  .user-avatar {
+    width: 24px;
+    height: 24px;
+  }
+
+  .username {
+    font-size: 12px;
+  }
+
+  .logout-btn {
+    width: 70px;
+    height: 28px;
+    font-size: 10px;
+    letter-spacing: 0.3px;
   }
 }

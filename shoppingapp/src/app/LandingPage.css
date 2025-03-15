@@ -178,7 +178,7 @@ body, html {
   padding: 50px 20px;
 }
 
-.categories-container{
+.categories-container {
   margin-top: 17px;
   display: flex;
   justify-content: center;
@@ -238,7 +238,6 @@ body, html {
   scrollbar-width: none;
 }
 
-
 .categories-wrapper::-webkit-scrollbar {
   display: none;
 }
@@ -290,7 +289,6 @@ body, html {
   transform: translateY(30px);
 }
 
-
 /* Scroll Right Arrow */
 .scroll-arrow {
   position: absolute;
@@ -303,10 +301,9 @@ body, html {
   cursor: pointer;
 }
 
-
 /* Footer */
 .footer {
-  margin-top:30px;
+  margin-top: 30px;
   background: #fff;
   padding: 30px 50px;
   text-align: center;
@@ -415,9 +412,9 @@ body, html {
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  }
-  
-  .login-modal {
+}
+
+.login-modal {
   background: white;
   padding: 30px;
   border-radius: 12px;
@@ -425,66 +422,66 @@ body, html {
   text-align: center;
   width: 450px;
   height: 320px;
-  }
-  
-  .login-modal h2 {
+}
+
+.login-modal h2 {
   font-size: 24px;
   font-family: 'Italiana', serif;
   margin-bottom: 15px;
-  }
-  
-  .login-input {
+}
+
+.login-input {
   width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 20px;
   margin-bottom: 15px;
   font-size: 14px;
-  }
-  
-  .login-submit {
+}
+
+.login-submit {
   width: 100%;
   border-radius: 20px;
   background: #C18C5D;
-  }
-  
-  .login-submit:hover {
+}
+
+.login-submit:hover {
   background: #A57245;
-  }
-  
-  .signup-text {
+}
+
+.signup-text {
   margin-top: 10px;
   font-size: 14px;
-  }
-  
-  .signup-text a {
+}
+
+.signup-text a {
   color: #C18C5D;
   text-decoration: none;
   font-weight: bold;
-  }
-  
-  .signup-text a:hover {
+}
+
+.signup-text a:hover {
   text-decoration: underline;
-  }
-  
-  .hero-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0; /* Sends the video behind other content */
-    overflow: hidden;
+}
+
+.hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* Sends the video behind other content */
+  overflow: hidden;
 }
 
 .hero-video video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 120vw;
-    height: 100vh;
-    object-fit: cover; /* Ensures video covers the entire background */
-    transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120vw;
+  height: 100vh;
+  object-fit: cover; /* Ensures video covers the entire background */
+  transform: translate(-50%, -50%);
 }
 
 /* Browse Categories Section */
@@ -538,4 +535,309 @@ body, html {
   font-size: 18px;
   font-weight: bold;
   margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 20px;
+    justify-content: space-between;
+  }
+
+  .nav-links {
+    display: none; /* Hide navigation links on small screens */
+  }
+
+  .search-bar {
+    margin-left: 0;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .search-bar input {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .icons {
+    margin-left: 0;
+    gap: 10px;
+  }
+
+  .hero {
+    height: 400px; /* Reduced height for smaller screens */
+    padding: 0 20px;
+  }
+
+  .hero-content {
+    margin-top: 100px;
+    margin-right: 20px;
+    padding: 15px;
+    max-width: 250px;
+  }
+
+  .hero-content h2 {
+    font-size: 24px;
+  }
+
+  .hero-content p {
+    font-size: 12px;
+  }
+
+  .hero-content .btn {
+    padding: 8px 12px;
+    font-size: 12px;
+    margin-top: 10px;
+  }
+
+  .hero-video video {
+    width: 150vw; /* Adjust video to fit smaller screens */
+    height: auto;
+  }
+
+  .categories {
+    font-size: 20px;
+    padding: 30px 10px;
+  }
+
+  .categories-container {
+    gap: 15px;
+    padding: 15px;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    justify-content: center;
+  }
+
+  .category-card {
+    width: 180px;
+  }
+
+  .category-img {
+    height: 200px;
+  }
+
+  .category-card p {
+    font-size: 14px;
+  }
+
+  .popular-categories {
+    font-size: 20px;
+    padding: 30px 0;
+  }
+
+  .categories-wrapper {
+    padding: 10px 20px;
+  }
+
+  .category-grid {
+    gap: 15px;
+  }
+
+  .large {
+    width: 200px;
+  }
+
+  .medium {
+    width: 150px;
+  }
+
+  .small {
+    width: 120px;
+  }
+
+  .footer {
+    padding: 20px;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .footer-left, .footer-right {
+    width: 100%;
+    text-align: center;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .footer-links li {
+    font-size: 18px;
+  }
+
+  .footer-right img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .privacy-policy {
+    font-size: 14px;
+  }
+
+  .login-modal {
+    width: 300px;
+    height: 250px;
+    padding: 20px;
+  }
+
+  .login-modal h2 {
+    font-size: 20px;
+  }
+
+  .login-input {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .login-submit {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .signup-text {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 10px;
+  }
+
+  .logo-container img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  .search-bar {
+    padding: 3px 5px;
+  }
+
+  .search-bar input {
+    font-size: 10px;
+    padding: 4px;
+  }
+
+  .icons img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .hero {
+    height: 300px;
+  }
+
+  .hero-content {
+    margin-top: 50px;
+    margin-right: 10px;
+    padding: 10px;
+    max-width: 200px;
+  }
+
+  .hero-content h2 {
+    font-size: 18px;
+  }
+
+  .hero-content p {
+    font-size: 10px;
+  }
+
+  .hero-content .btn {
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+
+  .categories {
+    font-size: 18px;
+    padding: 20px 5px;
+  }
+
+  .categories-container {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .category-card {
+    width: 140px;
+  }
+
+  .category-img {
+    height: 150px;
+  }
+
+  .category-card p {
+    font-size: 12px;
+  }
+
+  .popular-categories {
+    font-size: 18px;
+    padding: 20px 0;
+  }
+
+  .categories-wrapper {
+    padding: 5px 10px;
+  }
+
+  .category-grid {
+    gap: 10px;
+  }
+
+  .large {
+    width: 150px;
+  }
+
+  .medium {
+    width: 120px;
+  }
+
+  .small {
+    width: 100px;
+  }
+
+  .footer {
+    padding: 15px;
+  }
+
+  .footer-links li {
+    font-size: 16px;
+  }
+
+  .footer-right img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .privacy-policy {
+    font-size: 12px;
+  }
+
+  .login-modal {
+    width: 250px;
+    height: 200px;
+    padding: 15px;
+  }
+
+  .login-modal h2 {
+    font-size: 18px;
+  }
+
+  .login-input {
+    padding: 6px;
+    font-size: 10px;
+  }
+
+  .login-submit {
+    padding: 6px;
+    font-size: 10px;
+  }
+
+  .signup-text {
+    font-size: 10px;
+  }
 }
