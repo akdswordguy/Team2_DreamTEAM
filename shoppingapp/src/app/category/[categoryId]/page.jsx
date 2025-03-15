@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useQuery } from "@apollo/client";
 import { useCart } from "../../context/CartContext"; // Cart Context API
@@ -11,6 +11,46 @@ import { productClient } from "../../utils/apollo-client";
 import { GET_CATEGORY_PRODUCTS } from "../../graphql/categoryQueries";
 import "./style.css";
 import NavBar from "@/app/components/NavBar";
+
+// Function to check if an image URL is valid by testing if it loads
+const isImageValid = (url) => {
+  return new Promise((resolve) => {
+    if (!url || typeof url !== "string" || url.trim() === "") {
+      resolve(false);
+      return;
+    }
+    // Use window.Image to avoid conflict with the imported Image component
+    const img = new window.Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = url;
+  });
+};
+
+// Function to generate a random rating for a product
+const generateRating = () => {
+  const starsCount = Math.floor(Math.random() * 3) + 3; // 3 to 5 stars
+  const reviewsCount = Math.floor(Math.random() * 46) + 5; // 5 to 50 reviews
+  const stars = "★".repeat(starsCount) + "☆".repeat(5 - starsCount);
+  return { stars, reviewsCount };
+};
+
+// Function to filter products with valid images and attach ratings
+const filterProductsWithImages = async (products) => {
+  const validityChecks = await Promise.all(
+    products.map(async (product) => ({
+      ...product,
+      hasValidImage: await isImageValid(product.imageUrl),
+    }))
+  );
+  // Filter products with valid images and attach ratings
+  return validityChecks
+    .filter((product) => product.hasValidImage)
+    .map((product) => ({
+      ...product,
+      rating: generateRating(), // Attach rating to each product
+    }));
+};
 
 const CategoryPage = () => {
   const [selectedFilters, setSelectedFilters] = useState({
@@ -23,6 +63,35 @@ const CategoryPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 9;
   const { addItem } = useCart(); // Add product to cart function
+
+  // Get products with image validity status and ratings
+  const [productsWithStatus, setProductsWithStatus] = useState([]);
+
+  // Apollo Client Query
+  const { data, loading, error } = useQuery(GET_CATEGORY_PRODUCTS, {
+    variables: { id: parseInt(categoryId) },
+    skip: !categoryId,
+    client: productClient,
+  });
+
+  // Filter products based on selected category name
+  const filteredProducts = useMemo(() => {
+    return data?.category?.products?.filter((product) => {
+      if (!selectedFilters.category) return true;
+      return (
+        product.category?.toLowerCase() === selectedFilters.category.toLowerCase()
+      );
+    }) || [];
+  }, [data?.category?.products, selectedFilters.category]);
+
+  useEffect(() => {
+    const updateImageStatus = async () => {
+      const validProducts = await filterProductsWithImages(filteredProducts);
+      setProductsWithStatus(validProducts);
+    };
+    updateImageStatus();
+  }, [filteredProducts]);
+
   // Toggle category filter and update URL
   const toggleFilter = (type, value, id) => {
     const newCategory = selectedFilters[type] === value ? null : value;
@@ -51,32 +120,16 @@ const CategoryPage = () => {
     setCurrentPage(1);
   };
 
-  // Apollo Client Query
-  const { data, loading, error } = useQuery(GET_CATEGORY_PRODUCTS, {
-    variables: { id: parseInt(categoryId) },
-    skip: !categoryId,
-    client: productClient,
-  });
-
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading category data: {error.message}</p>;
 
   const category = data?.category || {};
-  const { products = [] } = category;
 
-  // Filter products based on selected category name
-  const filteredProducts = products.filter((product) => {
-    if (!selectedFilters.category) return true;
-    return (
-      product.category?.toLowerCase() === selectedFilters.category.toLowerCase()
-    );
-  });
-
-  if (!category || !products.length) {
+  if (!category || !productsWithStatus.length) {
     return <p>No products found for this category.</p>;
   }
 
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const totalPages = Math.ceil(productsWithStatus.length / productsPerPage);
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -84,17 +137,10 @@ const CategoryPage = () => {
     }
   };
 
-  const displayedProducts = filteredProducts.slice(
+  const displayedProducts = productsWithStatus.slice(
     (currentPage - 1) * productsPerPage,
     currentPage * productsPerPage
   );
-
-  const getRandomRating = () => {
-    const starsCount = Math.floor(Math.random() * 3) + 3; // 1 to 5 stars
-    const reviewsCount = Math.floor(Math.random() * 46) + 5; // 5 to 50 reviews
-    const stars = "★".repeat(starsCount) + "☆".repeat(5 - starsCount); // Full and empty stars
-    return { stars, reviewsCount };
-  };
 
   return (
     <div className="category-page">
@@ -143,39 +189,36 @@ const CategoryPage = () => {
 
         <div className="right-section">
           <div className="product-grid">
-            {displayedProducts.map((product) => {
-              const { stars, reviewsCount } = getRandomRating(); // Generate random rating per product
-              return (
-                <div key={product.id} className="product-card">
-                  <div className="image-container">
+            {displayedProducts.map((product) => (
+              <div key={product.id} className="product-card">
+                <div className="image-container">
                   <Link href={`/Product/${product.id}`}>
                     <Image
-                      src={product.imageUrl || "/default-product.jpg"}
+                      src={product.imageUrl}
                       alt={product.name}
                       width={300}
                       height={350}
                       style={{ objectFit: "cover" }}
                       className="product-image"
                     />
-                    </Link>
-                  </div>
-                  <div className="product-details">
-                    <span className="product-name">{product.name}</span>
-                    <span className="product-price">${product.price}</span>
-                    <div className="product-rating">
-                      <span className="stars">{stars}</span>
-                      <span>({reviewsCount})</span>
-                    </div>
-                  </div>
-                  <button
-                      className="add-to-cart-btn"
-                      onClick={() => addItem(product)} // Add product to cart
-                      >
-                      Add to Cart
-                  </button>
+                  </Link>
                 </div>
-              );
-            })}
+                <div className="product-details">
+                  <span className="product-name">{product.name}</span>
+                  <span className="product-price">${product.price}</span>
+                  <div className="product-rating">
+                    <span className="stars">{product.rating.stars}</span>
+                    <span>({product.rating.reviewsCount})</span>
+                  </div>
+                </div>
+                <button
+                  className="add-to-cart-btn"
+                  onClick={() => addItem(product)}
+                >
+                  Add to Cart
+                </button>
+              </div>
+            ))}
           </div>
 
           <div className="pagination">
