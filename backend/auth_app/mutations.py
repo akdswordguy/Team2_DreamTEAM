@@ -125,7 +125,7 @@ class AuthMutations:
         try:
             send_mail(
                 subject="Order Initiated",
-                message="Your order has been successfully initiated. We will update you soon!",
+                message="Your order has been successfully placed! We will keep you updated on its progress and notify you as soon as there are any updates. Thank you for choosing us!",
                 from_email="akdattingal@gmail.com",
                 recipient_list=[email],
                 fail_silently=False,

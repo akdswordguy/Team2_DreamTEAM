@@ -14,6 +14,8 @@ export const AuthProvider = ({ children }) => {
   // Load auth state from localStorage on mount
   useEffect(() => {
     const storedAuth = localStorage.getItem("auth");
+    console.log("Stored Auth from localStorage:", storedAuth); // 🔍 Debugging Line
+
     if (storedAuth) {
       setAuth(JSON.parse(storedAuth));
     }
@@ -27,6 +29,7 @@ export const AuthProvider = ({ children }) => {
     };
     setAuth(newAuthState);
     localStorage.setItem("auth", JSON.stringify(newAuthState)); // Save to localStorage
+    console.log("User Logged In:", newAuthState); // 🔍 Debugging Line
   };
 
   const logout = () => {
@@ -36,7 +39,10 @@ export const AuthProvider = ({ children }) => {
       email: null,
     });
     localStorage.removeItem("auth"); // Clear storage on logout
+    console.log("User Logged Out"); // 🔍 Debugging Line
   };
+
+  console.log("Current Auth State:", auth); // 🔍 Debugging Line
 
   return (
     <AuthContext.Provider value={{ ...auth, login, logout }}>
