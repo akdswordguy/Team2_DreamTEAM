@@ -10,7 +10,6 @@ import Link from "next/link";
 import { productClient } from "../../utils/apollo-client";
 import { GET_CATEGORY_PRODUCTS } from "../../graphql/categoryQueries";
 import "./style.css";
-import NavBar from "@/app/components/NavBar";
 
 const CategoryPage = () => {
   const [selectedFilters, setSelectedFilters] = useState({
@@ -98,7 +97,7 @@ const CategoryPage = () => {
 
   return (
     <div className="category-page">
-      <NavBar></NavBar>
+     
       <div className="banner-container">
         <div className="all-products">
           <Link href="#">All Products </Link>
