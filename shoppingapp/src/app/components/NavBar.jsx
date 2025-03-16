@@ -40,12 +40,7 @@ const NavBar = ({ setShowLogin }) => {
           <Link href="/Contact">Contact</Link>
         </li>
       </ul>
-      <div className="search-bar">
-        <input type="text" placeholder="Search products..." />
-        <button className="search-button">
-          <Image src="/maginifying.png" alt="Search" width={18} height={18} />
-        </button>
-      </div>
+    
 
       {/* Login/Logout Buttons */}
       <div className="icons">

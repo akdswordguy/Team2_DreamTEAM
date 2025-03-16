@@ -68,29 +68,6 @@
   margin-left: auto;
 }
 
-.search-bar input {
-  border: none;
-  outline: none;
-  padding: 8px;
-  font-size: 14px;
-  flex-grow: 1; /* Flexible width */
-}
-
-.search-bar input::placeholder {
-  color: #aaa; /* Placeholder color */
-}
-
-.search-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding-left: 10px;
-}
-
-.search-button img {
-  width: 18px;
-  height: 18px;
-}
 
 /* Icons */
 .icons {

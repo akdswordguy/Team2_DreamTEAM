@@ -17,7 +17,7 @@ const CreateProfile = () => {
   // Redirect to login page if user is not logged in
   useEffect(() => {
     if (!isLoggedIn) {
-      router.push("/login");
+      alert("You need to be logged in to access this page!");
     }
   }, [isLoggedIn, router]);
 

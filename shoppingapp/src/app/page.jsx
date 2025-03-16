@@ -6,7 +6,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { request, gql } from "graphql-request";
 // import AuthContext from "./AuthContext_old";
-import LoginModal from "./components/LoginModal";
 import CategoryList from "./components/CategoryList";
 import "./LandingPage.css";
 
@@ -125,7 +124,7 @@ const LandingPage = () => {
 
       {/* Popular Products */}
       <section className="popular-categories">
-        <h3 className="section-title">Popular Products</h3>
+        <h3 className="section-title" data-testid ="cypress-title">Popular Products</h3>
         <div className="categories-wrapper">
           <div className="category-grid">
             <div className="category-item large offset-up">
