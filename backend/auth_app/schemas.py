@@ -1,17 +1,14 @@
 import strawberry
-from typing import Optional
 from .mutations import AuthMutations
-from chowkidar.decorators import login_required
-
+from auth_app.queries import userIdByUsername
 from chowkidar.extension import JWTAuthExtension
 
 
 @strawberry.type
 class Query:
     @strawberry.field
-    @login_required
-    def protected_data(self, info) -> Optional[str]:
-        return "This data is protected and requires authentication."
+    def userIdByUsername(self, username: str) -> int:
+        return userIdByUsername(username)
 
 
 @strawberry.type

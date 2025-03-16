@@ -19,7 +19,6 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-
   // Add item to cart or increase quantity if it already exists
   const addItem = (item) => {
     setCart((prevCart) => {
@@ -56,17 +55,21 @@ export const CartProvider = ({ children }) => {
 
   // Decrease quantity of a specific item (remove if quantity reaches 0)
   const decreaseQuantity = (itemId) => {
-    setCart((prevCart) =>
-      prevCart
-        .map((cartItem) =>
-          cartItem.id === itemId
-            ? { ...cartItem, quantity: cartItem.quantity - 1 }
-            : cartItem
-        )
-        .filter((cartItem) => cartItem.quantity > 0) // Remove item if quantity is 0
+    setCart(
+      (prevCart) =>
+        prevCart
+          .map((cartItem) =>
+            cartItem.id === itemId
+              ? { ...cartItem, quantity: cartItem.quantity - 1 }
+              : cartItem
+          )
+          .filter((cartItem) => cartItem.quantity > 0) // Remove item if quantity is 0
     );
   };
-
+  // Clear the entire cart
+  const clearCart = () => {
+    setCart([]); // Reset cart to an empty array
+  };
   // Calculate total quantity of items in the cart
   const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -83,6 +86,7 @@ export const CartProvider = ({ children }) => {
     removeItem,
     increaseQuantity,
     decreaseQuantity,
+    clearCart,
     totalQuantity,
     totalCost,
   };

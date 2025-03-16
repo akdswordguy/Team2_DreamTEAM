@@ -52,12 +52,22 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-from django.db import models
+
 
 class Order(models.Model):
-    product = models.ForeignKey("product.Product", on_delete=models.CASCADE, related_name="auth_orders")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="auth_orders")
     quantity = models.PositiveIntegerField(default=1)
     ordered_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Order {self.id} - {self.product.name}"
+
+
+# ✅ Added Missing OrderItem Model
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.name} (Order {self.order.id})"

@@ -1,4 +1,6 @@
 import strawberry
+from typing import List, Optional
+from decimal import Decimal
 from .models import Product, Order, OrderItem
 
 
@@ -9,16 +11,13 @@ class ProductType:
     description: str
     price: float
     stock: int
-    image: str
+    image: Optional[str]
 
 
-@strawberry.type
-class OrderType:
-    id: int
-    user_id: int
-    total_amount: float
-    order_date: str
-    status: str
+@strawberry.input
+class OrderItemInput:
+    product_id: strawberry.ID
+    quantity: int
 
 
 @strawberry.type
@@ -27,14 +26,35 @@ class OrderItemType:
     order_id: int
     product_id: int
     quantity: int
-    price: float
+    price: Decimal
+
+
+@strawberry.type
+class OrderType:
+    id: strawberry.ID
+    userId: strawberry.ID  # camelCase
+    totalPrice: Decimal  # camelCase
+    status: str
+    items: List[OrderItemType]
+
+
+@strawberry.type
+class OrderResponse:
+    success: bool
+    message: str
+    order: Optional[OrderType] = None
 
 
 @strawberry.type
 class ProductMutations:
     @strawberry.mutation
     def add_product(
-        self, name: str, description: str, price: float, stock: int, image: str = None
+        self,
+        name: str,
+        description: str,
+        price: float,
+        stock: int,
+        image: Optional[str] = None,
     ) -> str:
         Product.objects.create(
             name=name, description=description, price=price, stock=stock, image=image
@@ -65,29 +85,30 @@ class ProductMutations:
 class OrderMutations:
     @strawberry.mutation
     def create_order(
-        self, user_id: int, total_amount: float, status: str = "Pending"
-    ) -> str:
-        Order.objects.create(user_id=user_id, total_amount=total_amount, status=status)
-        return "Order created successfully!"
-
-    @strawberry.mutation
-    def update_order_status(self, id: int, status: str) -> str:
+        self, userId: int, totalAmount: float, status: str = "Pending"
+    ) -> OrderResponse:
         try:
-            order = Order.objects.get(id=id)
-            order.status = status
-            order.save()
-            return f"Order ID {id} updated to status '{status}'."
-        except Order.DoesNotExist:
-            return "Order not found."
-
-    @strawberry.mutation
-    def delete_order(self, id: int) -> str:
-        try:
-            order = Order.objects.get(id=id)
-            order.delete()
-            return f"Order ID {id} deleted."
-        except Order.DoesNotExist:
-            return "Order not found."
+            total_amount_decimal = Decimal(str(totalAmount))
+            order = Order.objects.create(
+                user_id=userId,  # Database field
+                total_amount=total_amount_decimal,  # Database field
+                status=status,
+            )
+            return OrderResponse(
+                success=True,
+                message="Order created successfully!",
+                order=OrderType(
+                    id=order.id,
+                    userId=order.user_id,  # Map to camelCase
+                    totalPrice=order.total_amount,  # Map to camelCase
+                    status=order.status,
+                    items=[],
+                ),
+            )
+        except Exception as e:
+            return OrderResponse(
+                success=False, message=f"Failed to create order: {str(e)}", order=None
+            )
 
 
 @strawberry.type

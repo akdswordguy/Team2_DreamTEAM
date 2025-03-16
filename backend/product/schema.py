@@ -5,10 +5,12 @@ from product.mutations import ProductMutations, OrderMutations, OrderItemMutatio
 
 @strawberry.type
 class RootMutations:
-    product_mutations: ProductMutations = strawberry.field(resolver=ProductMutations)
-    order_mutations: OrderMutations = strawberry.field(resolver=OrderMutations)
-    order_item_mutations: OrderItemMutations = strawberry.field(
-        resolver=OrderItemMutations
+    productMutations: ProductMutations = strawberry.field(
+        resolver=lambda: ProductMutations()
+    )
+    orderMutations: OrderMutations = strawberry.field(resolver=lambda: OrderMutations())
+    orderItemMutations: OrderItemMutations = strawberry.field(
+        resolver=lambda: OrderItemMutations()
     )
 
 
