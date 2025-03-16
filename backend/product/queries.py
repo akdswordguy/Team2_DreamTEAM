@@ -5,8 +5,7 @@ from .mutations import (
     ProductType,
     OrderType,
     OrderItemType,
-)  # Assuming these types are defined in mutations.py
-
+)
 
 @strawberry.type
 class ProductType:
