@@ -1,22 +1,93 @@
-# Backend Store Online
+# LUXORA
 
-## Testing Registration and Login
+## Overview
+Luxora is an e-commerce platform built using **Next.js, Django, GraphQL (Strawberry), and Chokidar**. The platform supports user authentication, product management, and a shopping cart. Admins can manage products via the Django admin panel, and users can browse products, add them to their cart, and receive order confirmation emails upon checkout.
 
-To test registration and login using your Django application with Chokidar and Strawberry GraphQL, follow these steps. You can use a GraphQL client like **Postman, Insomnia, or GraphiQL**.
+## Features
+- **User Authentication**: Register and log in using GraphQL mutations.
+- **Admin Panel**: Add, update, and delete products via Django Admin.
+- **Product Selection**: Browse products in the shop section.
+- **Add to Cart**: Only logged-in users can add products to their cart.
+- **Checkout with Email Notification**: Users receive an email upon successful checkout.
+- **GraphQL API**: Efficient querying with Strawberry GraphQL.
+- **Real-time File Watching**: Chokidar monitors changes in the backend.
+- **Testing**: The application is tested using **Vitest, Cypress, and Django’s Unittest framework**.
 
-### Step 1: Start Your Django Server
+## Tech Stack
+- **Frontend**: Next.js
+- **Backend**: Django, Strawberry GraphQL
+- **Database**: PostgreSQL (or SQLite for development)
+- **File Watching**: Chokidar
+- **Testing**: Vitest (Frontend), Cypress (End-to-End), Django Unittest (Backend)
 
-Ensure your Django server is running before testing. Start the server with:
+## Installation and Setup
 
-```bash
-python manage.py runserver
-```
+### Prerequisites
+Ensure you have the following installed:
+- Python 3.8+
+- Node.js 16+
+- PostgreSQL (optional, SQLite can be used for development)
 
-### Step 2: Testing Registration
+### Backend Setup
 
-1. **Open your GraphQL client** (e.g., GraphiQL or Postman).
-2. **Use the following mutation to register a new user**. Replace the values for `username`, `email`, and `password` with your desired inputs:
+1. Clone the repository:
+   ```bash
+   git https://github.com/akdswordguy/Team2_DreamTEAM.git
+   ```
+2. Create a virtual environment and activate it:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Apply migrations:
+   ```bash
+   python manage.py migrate
+   ```
 
+5. Start the backend server:
+   ```bash
+   python manage.py runserver
+   ```
+
+### Frontend Setup
+
+1. Navigate to the frontend directory:
+   ```bash
+   cd shoppingapp/
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the Next.js development server:
+   ```bash
+   npm run dev
+   ```
+
+## Testing
+
+### Backend Testing
+- **Django Unittest**:
+  ```bash
+  python manage.py test
+  ```
+
+### Frontend Testing
+- **Vitest**:
+  ```bash
+  npm run test
+  ```
+- **Cypress (E2E Testing)**:
+  ```bash
+  npx run cypress
+  ```
+
+
+### User Registration
 ```graphql
 mutation {
   register(
@@ -26,9 +97,7 @@ mutation {
   )
 }
 ```
-
-3. **Expected Response:**
-
+**Response:**
 ```json
 {
   "data": {
@@ -37,20 +106,13 @@ mutation {
 }
 ```
 
-4. **Check for errors:** If there are validation errors (e.g., username already taken), they will be returned in the response.
-
-### Step 3: Testing Login
-
-1. **Use the following mutation to log in**. Provide the correct username and password:
-
+### User Login
 ```graphql
 mutation {
   login(username: "testuser", password: "securepassword")
 }
 ```
-
-2. **Expected Response:**
-
+**Response:**
 ```json
 {
   "data": {
@@ -59,52 +121,7 @@ mutation {
 }
 ```
 
-3. **Query protected data:**
-
-```graphql
-query {
-  protectedData
-}
-```
-
-## Product Queries
-
-### Fetch All Categories and Their Products
-
-```graphql
-query {
-  allCategories {
-    id
-    name
-    description
-    products {
-      id
-      name
-      price
-      stock
-    }
-  }
-}
-```
-
-### Fetch a Single Category by ID
-
-```graphql
-query {
-  category(id: 1) {
-    id
-    name
-    description
-    products {
-      id
-      name
-    }
-  }
-}
-```
-
 ### Fetch All Products
-
 ```graphql
 query {
   allProducts {
@@ -120,21 +137,21 @@ query {
 }
 ```
 
-### Fetch a Single Product by ID
+### Checkout (Email Confirmation Sent)
+Once the user clicks checkout, an email will be sent confirming their purchase.
 
-```graphql
-query {
-  product(id: 1) {
-    id
-    name
-    description
-    price
-    stock
-    category {
-      id
-      name
-    }
-  }
-}
+## Admin Panel
+To manage products, navigate to:
 ```
+http://127.0.0.1:8000/admin/
+```
+Log in using the superuser credentials created earlier.
+
+## License
+This project is licensed under the MIT License.
+
+
+
+---
+
 
