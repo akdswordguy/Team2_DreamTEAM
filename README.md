@@ -1,7 +1,7 @@
 # LUXORA
 
 ## Overview
-Luxora is an e-commerce platform built using **Next.js, Django, GraphQL (Strawberry), and Chokidar**. The platform supports user authentication, product management, and a shopping cart. Admins can manage products via the Django admin panel, and users can browse products, add them to their cart, and receive order confirmation emails upon checkout.
+Luxora is an e-commerce platform built using **Next.js, Django, GraphQL (Strawberry), and Chokidar**. The platform supports user authentication, product management, and a shopping cart. Admins can manage products via the Django admin panel, and users can browse products, add them to their cart, and receive order confirmation emails upon checkout. The website is highly responsive and can be accessed through mobile phones.
 
 ## Features
 - **User Authentication**: Register and log in using GraphQL mutations.
