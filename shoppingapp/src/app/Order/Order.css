@@ -1,0 +1,33 @@
+.order-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .order-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .order-content {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .error-message {
+    color: #ff0000;
+    text-align: center;
+  }
+  
+  .confirmation-message {
+    text-align: center;
+    font-size: 1.2rem;
+    line-height: 1.6;
+  }
+  
+  .confirmation-message strong {
+    color: #007bff;
+  }

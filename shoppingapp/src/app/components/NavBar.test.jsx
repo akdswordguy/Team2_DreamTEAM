@@ -41,6 +41,7 @@ describe("NavBar Component", () => {
     // Mock useCart to return a default state
     useCart.mockReturnValue({
       totalQuantity: 0, // Mock totalQuantity
+      clearCart: vi.fn(), // Mock clearCart function
     });
 
     render(<NavBar setShowLogin={vi.fn()} />);
@@ -64,6 +65,7 @@ describe("NavBar Component", () => {
     // Mock useCart to return a default state
     useCart.mockReturnValue({
       totalQuantity: 0, // Mock totalQuantity
+      clearCart: vi.fn(), // Mock clearCart function
     });
 
     render(<NavBar setShowLogin={vi.fn()} />);
@@ -78,6 +80,7 @@ describe("NavBar Component", () => {
 
   test("calls logout function when logout button is clicked", () => {
     const mockLogout = vi.fn(); // Mock logout function
+    const mockClearCart = vi.fn(); // Mock clearCart function
 
     // Mock useAuth to return an authenticated state
     useAuth.mockReturnValue({
@@ -90,6 +93,7 @@ describe("NavBar Component", () => {
     // Mock useCart to return a default state
     useCart.mockReturnValue({
       totalQuantity: 0, // Mock totalQuantity
+      clearCart: mockClearCart, // Mock clearCart function
     });
 
     render(<NavBar setShowLogin={vi.fn()} />);
@@ -98,8 +102,9 @@ describe("NavBar Component", () => {
     const logoutButton = screen.getByRole("button", { name: /logout/i });
     fireEvent.click(logoutButton);
 
-    // Check if the logout function was called
+    // Check if the logout and clearCart functions were called
     expect(mockLogout).toHaveBeenCalledTimes(1);
+    expect(mockClearCart).toHaveBeenCalledTimes(1);
   });
 
   test("calls login function when login button is clicked", () => {
@@ -116,6 +121,7 @@ describe("NavBar Component", () => {
     // Mock useCart to return a default state
     useCart.mockReturnValue({
       totalQuantity: 0, // Mock totalQuantity
+      clearCart: vi.fn(), // Mock clearCart function
     });
 
     render(<NavBar setShowLogin={mockLogin} />);

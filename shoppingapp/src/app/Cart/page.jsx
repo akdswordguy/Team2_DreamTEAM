@@ -1,15 +1,18 @@
 "use client";
+
 import React from "react";
 import { useCart } from "../context/CartContext"; // Import Cart Context
 import { useAuth } from "../context/AuthContext"; // Import Auth Context
 import Image from "next/image";
-import "./Cart.css";
 import NavBar from "../components/NavBar"; // Import NavBar component
+import "./Cart.css";
+import { useParams, useRouter } from "next/navigation";
 
 const CartPage = () => {
-  const { isLoggedIn, email } = useAuth(); // Get email from AuthContext
-  const { cart, removeItem, totalCost, increaseQuantity, decreaseQuantity } = useCart();
-
+  const router = useRouter();
+  const { isLoggedIn, userId, email } = useAuth(); // Get userId and email from AuthContext
+  const { cart, removeItem, totalCost, increaseQuantity, decreaseQuantity } =
+    useCart();
 
   const handleCheckout = async () => {
     if (!isLoggedIn) {
@@ -17,44 +20,78 @@ const CartPage = () => {
       return;
     }
 
-    if (!email) {
-      alert("User email not found. Please try logging in again.");
+    if (!email || !userId) {
+      alert("User information is incomplete. Please try logging in again.");
+      return;
+    }
+
+    if (cart.length === 0) {
+      alert("Cart is empty. Please add items to your cart before checkout.");
       return;
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/auth_app/graphql/", {
+      // Prepare the GraphQL query and variables
+      const query = `
+     mutation CreateOrder($userId: Int!, $totalAmount: Float!, $status: String!) {
+    orderMutations {
+      createOrder(userId: $userId, totalAmount: $totalAmount, status: $status) {
+        success
+        message
+        order {
+          id
+          userId      
+          totalPrice  
+          status
+        }
+      }
+    }
+  }
+`;
+
+      // Round totalCost to 2 decimal places and ensure it's a float
+      const totalAmount = parseFloat(totalCost.toFixed(2));
+
+      console.log("Total Amount:", totalAmount, typeof totalAmount); // Debugging
+
+      const variables = {
+        userId: parseInt(userId), // Ensure userId is an integer
+        totalAmount, // Use the rounded total amount
+        status: "Pending",
+      };
+
+      // Send the GraphQL mutation request
+      const response = await fetch("http://127.0.0.1:8000/product/graphql/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          query: `
-            mutation {
-              checkout(email: "${email}") {
-                message
-                success
-              }
-            }
-          `,
+          query,
+          variables,
         }),
       });
 
       const result = await response.json();
-      if (result?.data?.checkout?.success) {
-        alert(result.data.checkout.message);
-      } else {
-        alert("Failed to initiate checkout. Please try again.");
+
+      if (result?.data?.orderMutations?.createOrder?.success) {
+        alert(result.data.orderMutations.createOrder.message);
+        router.push("/Order");
+        alert(
+          result?.data?.orderMutations?.createOrder?.message ||
+            "Failed to create order. Please try again."
+        );
       }
     } catch (error) {
       console.error("Checkout error:", error);
-      alert("An error occurred while processing your order.");
+      alert(
+        "An error occurred while processing your order. Please try again later."
+      );
     }
   };
 
   return (
     <div className="cart-container">
-
       <h1 className="cart-title">Shopping Cart</h1>
       <div className="cart-content">
         {/* Cart Items Section */}
@@ -62,7 +99,6 @@ const CartPage = () => {
           {cart.length > 0 ? (
             cart.map((item) => (
               <div key={item.id} className="cart-item">
-
                 <div className="cart-details">
                   <p className="cart-product-name">{item.name}</p>
                 </div>
@@ -119,19 +155,18 @@ const CartPage = () => {
             <button className="checkout-btn" onClick={handleCheckout}>
               Proceed to Checkout
             </button>
-
-            
           </div>
-          {/* Video Section (Placed on the Right) */}
-<div className="video-container">
-<video className="checkout-video" autoPlay loop muted playsInline>
-<source src="/cart-vid.webm" type="video/webm" />
-Your browser does not support the video tag.
-</video>
-</div>
-</div>
+
+          {/* Video Section */}
+          <div className="video-container">
+            <video className="checkout-video" autoPlay loop muted playsInline>
+              <source src="/cart-vid.webm" type="video/webm" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
         </div>
       </div>
+    </div>
   );
 };
 

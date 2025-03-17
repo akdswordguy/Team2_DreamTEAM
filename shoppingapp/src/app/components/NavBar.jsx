@@ -10,11 +10,18 @@ import { useRouter } from "next/navigation";
 
 const NavBar = ({ setShowLogin }) => {
   const { isLoggedIn, logout, username } = useAuth();
-  const { totalQuantity } = useCart();
+  const { totalQuantity, clearCart } = useCart();
   const router = useRouter();
+
   const handleCartClick = () => {
     router.push("/Cart"); // Navigate to the Cart page
   };
+
+  const handleLogout = () => {
+    clearCart(); // Clear the cart first
+    logout(); // Then logout the user
+  };
+
   return (
     <nav className="navbar">
       {/* Logo Section */}
@@ -40,7 +47,6 @@ const NavBar = ({ setShowLogin }) => {
           <Link href="/Contact">Contact</Link>
         </li>
       </ul>
-    
 
       {/* Login/Logout Buttons */}
       <div className="icons">
@@ -55,7 +61,7 @@ const NavBar = ({ setShowLogin }) => {
           <div className="user-info">
             <span className="welcome-text">Welcome, {username}!</span>{" "}
             {/* Display Username */}
-            <button className="logout-btn" onClick={logout}>
+            <button className="logout-btn" onClick={handleLogout}>
               <Image
                 src="/logout-img.png"
                 alt="Logout"

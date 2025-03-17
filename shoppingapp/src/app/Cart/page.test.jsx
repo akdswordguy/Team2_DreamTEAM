@@ -1,9 +1,28 @@
+// Cart/page.test.jsx
 import React from 'react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CartPage from './page';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+
+// Mock next/navigation instead of next/router
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+  useParams: () => ({}),
+}));
+
+// Mock the Image component from next/image
+vi.mock('next/image', () => ({
+  default: (props) => <img {...props} />
+}));
+
+// Mock the NavBar component
+vi.mock('../components/NavBar', () => ({
+  default: () => <div data-testid="navbar-mock">Navbar Mock</div>
+}));
 
 // Mock the contexts
 vi.mock('../context/CartContext', () => ({
@@ -16,6 +35,10 @@ vi.mock('../context/AuthContext', () => ({
 
 describe('CartPage', () => {
   beforeEach(() => {
+    // Reset mocks
+    vi.resetAllMocks();
+    
+    // Mock the CartContext with initial cart state
     useCart.mockReturnValue({
       cart: [
         { id: 1, name: 'Product 1', price: 10.0, quantity: 2 },
@@ -27,15 +50,35 @@ describe('CartPage', () => {
       decreaseQuantity: vi.fn(),
     });
 
+    // Mock the AuthContext with a logged-in user
     useAuth.mockReturnValue({
       isLoggedIn: true,
+      userId: '123',
       email: 'test@example.com',
     });
 
+    // Mock window.alert
     vi.spyOn(window, 'alert').mockImplementation(() => {});
+    
+    // Mock fetch
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({ 
+          data: { 
+            orderMutations: { 
+              createOrder: { 
+                success: true, 
+                message: 'Order created successfully' 
+              } 
+            } 
+          } 
+        }),
+      })
+    );
   });
 
   afterEach(() => {
+    // Restore all mocks after each test
     vi.restoreAllMocks();
   });
 
@@ -52,33 +95,38 @@ describe('CartPage', () => {
 
   it('renders the total cost', () => {
     render(<CartPage />);
-    const totalElement = screen.getByText((content, element) => 
-      content.startsWith('Total:') && element.textContent.includes('$40.00')
-    );
-    expect(totalElement).toBeInTheDocument();
+    expect(screen.getByText(/Total:/)).toBeInTheDocument();
+    const totalElement = screen.getByText(/Total:/);
+    const totalPrice = totalElement.closest('.checkout-total').querySelector('strong');
+    expect(totalPrice).toHaveTextContent('$40.00');
   });
 
   it('calls removeItem when delete button is clicked', () => {
     render(<CartPage />);
-    fireEvent.click(screen.getAllByRole('button', { name: /delete/i })[0]);
+    // Use a more specific selector since the Delete button may not have a text label
+    const deleteButtons = screen.getAllByRole('button', { name: /Delete/i });
+    fireEvent.click(deleteButtons[0]);
     expect(useCart().removeItem).toHaveBeenCalledWith(1);
   });
 
   it('calls increaseQuantity when plus button is clicked', () => {
     render(<CartPage />);
-    fireEvent.click(screen.getAllByRole('button', { name: '+' })[0]);
+    const plusButtons = screen.getAllByText('+');
+    fireEvent.click(plusButtons[0]);
     expect(useCart().increaseQuantity).toHaveBeenCalledWith(1);
   });
 
   it('calls decreaseQuantity when minus button is clicked', () => {
     render(<CartPage />);
-    fireEvent.click(screen.getAllByRole('button', { name: '-' })[0]);
+    const minusButtons = screen.getAllByText('-');
+    fireEvent.click(minusButtons[0]);
     expect(useCart().decreaseQuantity).toHaveBeenCalledWith(1);
   });
 
   it('shows an alert if user is not logged in during checkout', () => {
     useAuth.mockReturnValue({
       isLoggedIn: false,
+      userId: null,
       email: null,
     });
 
@@ -90,40 +138,38 @@ describe('CartPage', () => {
   it('shows an alert if user email is not found during checkout', () => {
     useAuth.mockReturnValue({
       isLoggedIn: true,
+      userId: null,
       email: null,
     });
 
     render(<CartPage />);
     fireEvent.click(screen.getByText('Proceed to Checkout'));
-    expect(window.alert).toHaveBeenCalledWith('User email not found. Please try logging in again.');
+    expect(window.alert).toHaveBeenCalledWith('User information is incomplete. Please try logging in again.');
   });
 
   it('calls the checkout mutation when user is logged in', async () => {
-    global.fetch = vi.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve({ data: { checkout: { success: true, message: 'Checkout successful' } } }),
-      })
-    );
-
     render(<CartPage />);
     fireEvent.click(screen.getByText('Proceed to Checkout'));
 
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    // Wait for the fetch call to complete
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalled();
+    });
 
-    expect(window.alert).toHaveBeenCalledWith('Checkout successful');
-    expect(global.fetch).toHaveBeenCalled();
-
-    const [url, options] = global.fetch.mock.calls[0];
-    expect(url).toBe('http://127.0.0.1:8000/auth_app/graphql/');
+    // Verify the fetch call
+    const fetchCalls = global.fetch.mock.calls;
+    expect(fetchCalls[0][0]).toBe('http://127.0.0.1:8000/product/graphql/');
+    
+    const options = fetchCalls[0][1];
     expect(options.method).toBe('POST');
     expect(options.headers['Content-Type']).toBe('application/json');
 
     const bodyObj = JSON.parse(options.body);
-    expect(bodyObj.query).toContain('mutation');
-    expect(bodyObj.query).toContain('checkout(email: "test@example.com")');
-    expect(bodyObj.query).toContain('message');
-    expect(bodyObj.query).toContain('success');
-
-    fetch.mockRestore();
+    expect(bodyObj.query).toContain('mutation CreateOrder');
+    expect(bodyObj.variables).toEqual({
+      userId: 123,
+      totalAmount: 40.00,
+      status: 'Pending'
+    });
   });
 });
