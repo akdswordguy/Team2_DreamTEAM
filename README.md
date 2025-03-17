@@ -148,7 +148,7 @@ http://127.0.0.1:8000/admin/
 Log in using the superuser credentials created earlier.
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the Apache License.
 
 
 
