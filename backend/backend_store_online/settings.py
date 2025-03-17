@@ -24,16 +24,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-n_i34=_vo37j&6k+da1t2#5oovj^*t7690%bsjx99$7*yq3kx!"
 
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": config("DB_NAME"),
-        "USER": config("DB_USER"),
-        "PASSWORD": config("DB_PASSWORD"),
-        "HOST": config("DB_HOST"),
-        "PORT": config("DB_PORT"),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'onlineDB',
+        'USER': 'avnadmin',
+        'PASSWORD': 'AVNS_pj03tDEz_nmkXiblYvq',
+        'HOST': 'onlinestore-dreamteam-2025.i.aivencloud.com',
+        'PORT': '15137',
     }
 }
+
 
 
 DEBUG = True

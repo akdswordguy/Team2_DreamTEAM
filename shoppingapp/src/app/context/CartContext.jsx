@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
@@ -18,7 +19,6 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
-
 
   // Add item to cart or increase quantity if it already exists
   const addItem = (item) => {

@@ -62,8 +62,11 @@ const LoginModal = ({ isOpen, closeModal, onLoginSuccess }) => {
     <div className="modal-overlay" onClick={closeModal}>
       <div className="login-modal" onClick={(e) => e.stopPropagation()}>
         <h2>Login</h2>
-        
+
+        {/* Add labels for inputs */}
+        <label htmlFor="username">Username</label>
         <input
+          id="username"
           type="text"
           placeholder="Username"
           className="login-input"
@@ -72,7 +75,10 @@ const LoginModal = ({ isOpen, closeModal, onLoginSuccess }) => {
             setCredentials({ ...credentials, username: e.target.value })
           }
         />
+
+        <label htmlFor="password">Password</label>
         <input
+          id="password"
           type="password"
           placeholder="Password"
           className="login-input"
@@ -81,6 +87,7 @@ const LoginModal = ({ isOpen, closeModal, onLoginSuccess }) => {
             setCredentials({ ...credentials, password: e.target.value })
           }
         />
+
         <button
           className="btn login-submit"
           onClick={handleLogin}
