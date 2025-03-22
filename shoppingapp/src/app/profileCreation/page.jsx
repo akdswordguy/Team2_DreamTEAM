@@ -14,11 +14,16 @@ const CreateProfile = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Redirect to login page if user is not logged in
+  // Delay login check by 2 seconds
   useEffect(() => {
-    if (!isLoggedIn) {
-      alert("You need to be logged in to access this page!");
-    }
+    const timer = setTimeout(() => {
+      if (!isLoggedIn) {
+        alert("You need to be logged in to access this page!");
+
+      }
+    }, 2000);
+
+    return () => clearTimeout(timer); // Cleanup function
   }, [isLoggedIn, router]);
 
   useEffect(() => {
@@ -33,30 +38,6 @@ const CreateProfile = () => {
 
   return (
     <div className="signup">
-      {/* Navbar */}
-      <nav className="navbar">
-        <div className="logo-container">
-          <Image src="/company-logo.png" alt="Company Logo" width={35} height={35} />
-          <div className="logo">LUXORA</div>
-        </div>
-        <ul className="nav-links">
-          <li><Link href="/">Home</Link></li>
-          <li><Link href="/profileCreation">Profile</Link></li>
-          <li><Link href="/Contact">Contact</Link></li>
-        </ul>
-        <div className="search-bar">
-          <input type="text" placeholder="Search products..." />
-          <button className="search-button">
-            <Image src="/maginifying.png" alt="Search" width={18} height={18} />
-          </button>
-        </div>
-        <div className="icons">
-          <button className="login-btn" onClick={() => setShowLogin(true)}>
-            <Image src="/login-img.png" alt="Login" width={22} height={22} />
-          </button>
-        </div>
-      </nav>
-
       {/* Main Container */}
       <div className="main-content">
         {/* Left Content - Form and Profile Upload */}

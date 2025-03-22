@@ -21,7 +21,6 @@ const NavBar = ({ setShowLogin }) => {
     clearCart(); // Clear the cart first
     logout(); // Then logout the user
   };
-
   return (
     <nav className="navbar">
       {/* Logo Section */}

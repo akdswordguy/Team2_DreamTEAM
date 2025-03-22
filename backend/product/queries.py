@@ -5,7 +5,7 @@ from .mutations import (
     ProductType,
     OrderType,
     OrderItemType,
-)  # Assuming these types are defined in mutations.py
+)
 
 
 @strawberry.type
@@ -33,7 +33,6 @@ class CategoryType:
 
 @strawberry.type
 class Query:
-    # Existing Category and Product Queries
     @strawberry.field
     def all_categories(self) -> List[CategoryType]:
         return Category.objects.all()
