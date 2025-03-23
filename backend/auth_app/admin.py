@@ -19,14 +19,8 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 
-class OrderAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "total_amount", "status")
-    
-    def get_products(self, obj):
-        return ", ".join([f"{item.product.name} ({item.quantity})" for item in obj.items.all()])
 
-    get_products.short_description = "Products"
 
 # ✅ Register models once
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(Order, OrderAdmin)
+

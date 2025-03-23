@@ -6,3 +6,7 @@ urlpatterns = [
     path("auth_app/", include("auth_app.urls")),
     path("product/", include("product.urls")),
 ]
+
+
+# Comment out or remove this line
+# admin.autodiscover()
