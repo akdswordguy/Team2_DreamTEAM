@@ -5,12 +5,10 @@ import LoginModal from "./LoginModal";
 import { useAuth } from "../context/AuthContext";
 import { useMutation } from "@apollo/client";
 
-// Mock window.alert
 beforeAll(() => {
   window.alert = vi.fn();
 });
 
-// Mock Apollo Client
 vi.mock("@apollo/client", async (importOriginal) => {
   const actual = await importOriginal();
   return {
@@ -26,13 +24,12 @@ vi.mock("@apollo/client", async (importOriginal) => {
             },
           },
         })
-      ), // Mock successful response
+      ),
       { loading: false, error: null },
     ]),
   };
 });
 
-// Mock AuthContext
 vi.mock("../context/AuthContext", () => ({
   useAuth: vi.fn(() => ({
     isLoggedIn: false,
@@ -54,10 +51,8 @@ describe("LoginModal Component", () => {
       />
     );
 
-    // Debug the rendered output
     screen.debug();
 
-    // Check if the login form is rendered
     expect(screen.getByLabelText("Username")).toBeInTheDocument();
     expect(screen.getByLabelText("Password")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /login/i })).toBeInTheDocument();
@@ -79,7 +74,6 @@ describe("LoginModal Component", () => {
       />
     );
 
-    // Fill out the form
     fireEvent.change(screen.getByLabelText("Username"), {
       target: { value: "testuser" },
     });
@@ -87,12 +81,10 @@ describe("LoginModal Component", () => {
       target: { value: "password123" },
     });
 
-    // Submit the form
     await act(async () => {
       fireEvent.click(screen.getByRole("button", { name: /login/i }));
     });
 
-    // Check if the login function was called
     expect(mockLogin).toHaveBeenCalledWith("testuser", "test@example.com");
   });
 });

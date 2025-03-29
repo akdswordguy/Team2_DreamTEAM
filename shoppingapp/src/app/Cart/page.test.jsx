@@ -1,4 +1,3 @@
-// Cart/page.test.jsx
 import React from 'react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
@@ -6,7 +5,6 @@ import CartPage from './page';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
-// Mock next/navigation instead of next/router
 vi.mock('next/navigation', () => ({
   useRouter: () => ({
     push: vi.fn(),
@@ -14,17 +12,14 @@ vi.mock('next/navigation', () => ({
   useParams: () => ({}),
 }));
 
-// Mock the Image component from next/image
 vi.mock('next/image', () => ({
   default: (props) => <img {...props} />
 }));
 
-// Mock the NavBar component
 vi.mock('../components/NavBar', () => ({
   default: () => <div data-testid="navbar-mock">Navbar Mock</div>
 }));
 
-// Mock the contexts
 vi.mock('../context/CartContext', () => ({
   useCart: vi.fn(),
 }));
@@ -35,10 +30,8 @@ vi.mock('../context/AuthContext', () => ({
 
 describe('CartPage', () => {
   beforeEach(() => {
-    // Reset mocks
     vi.resetAllMocks();
     
-    // Mock the CartContext with initial cart state
     useCart.mockReturnValue({
       cart: [
         { id: 1, name: 'Product 1', price: 10.0, quantity: 2 },
@@ -50,17 +43,14 @@ describe('CartPage', () => {
       decreaseQuantity: vi.fn(),
     });
 
-    // Mock the AuthContext with a logged-in user
     useAuth.mockReturnValue({
       isLoggedIn: true,
       userId: '123',
       email: 'test@example.com',
     });
 
-    // Mock window.alert
     vi.spyOn(window, 'alert').mockImplementation(() => {});
     
-    // Mock fetch
     global.fetch = vi.fn(() =>
       Promise.resolve({
         json: () => Promise.resolve({ 
@@ -78,7 +68,6 @@ describe('CartPage', () => {
   });
 
   afterEach(() => {
-    // Restore all mocks after each test
     vi.restoreAllMocks();
   });
 
@@ -103,7 +92,6 @@ describe('CartPage', () => {
 
   it('calls removeItem when delete button is clicked', () => {
     render(<CartPage />);
-    // Use a more specific selector since the Delete button may not have a text label
     const deleteButtons = screen.getAllByRole('button', { name: /Delete/i });
     fireEvent.click(deleteButtons[0]);
     expect(useCart().removeItem).toHaveBeenCalledWith(1);
@@ -151,12 +139,10 @@ describe('CartPage', () => {
     render(<CartPage />);
     fireEvent.click(screen.getByText('Proceed to Checkout'));
 
-    // Wait for the fetch call to complete
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalled();
     });
 
-    // Verify the fetch call
     const fetchCalls = global.fetch.mock.calls;
     expect(fetchCalls[0][0]).toBe('http://127.0.0.1:8000/product/graphql/');
     

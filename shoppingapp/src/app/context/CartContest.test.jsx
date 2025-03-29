@@ -3,7 +3,6 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, act } from '@testing-library/react';
 import { CartProvider, useCart } from './CartContext';
 
-// Mock localStorage
 const localStorageMock = (() => {
   let store = {};
   return {
@@ -26,7 +25,6 @@ Object.defineProperty(window, 'localStorage', {
 
 describe('CartProvider', () => {
   beforeEach(() => {
-    // Clear localStorage and reset mocks before each test
     localStorage.clear();
     vi.clearAllMocks();
   });

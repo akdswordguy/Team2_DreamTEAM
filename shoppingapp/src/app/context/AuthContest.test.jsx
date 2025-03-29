@@ -3,7 +3,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, act, waitFor } from '@testing-library/react';
 import { AuthProvider, useAuth } from './AuthContext';
 
-// Mock the GraphQL client
 vi.mock('graphql-request', () => {
   return {
     gql: vi.fn((query) => query),
@@ -15,7 +14,6 @@ vi.mock('graphql-request', () => {
   };
 });
 
-// Helper component to use the auth context in tests
 const TestComponent = () => {
   const { isLoggedIn, username, email, userId, login, logout } = useAuth();
   return (
@@ -36,9 +34,7 @@ const TestComponent = () => {
 
 describe('AuthProvider', () => {
   beforeEach(() => {
-    // Clear localStorage before each test
     localStorage.clear();
-    // Clear all mocks
     vi.clearAllMocks();
   });
 
@@ -60,22 +56,18 @@ describe('AuthProvider', () => {
       </AuthProvider>
     );
     
-    // Simulate login
     await act(async () => {
       screen.getByTestId('login-button').click();
     });
     
-    // Verify the auth state (immediately after login)
     expect(screen.getByTestId('isLoggedIn').textContent).toBe('true');
     expect(screen.getByTestId('username').textContent).toBe('testuser');
     expect(screen.getByTestId('email').textContent).toBe('test@example.com');
     
-    // Wait for the userId to be fetched
     await waitFor(() => {
       expect(screen.getByTestId('userId').textContent).toBe('mock-user-id');
     });
     
-    // Verify localStorage
     const storedAuth = JSON.parse(localStorage.getItem('auth'));
     expect(storedAuth.isLoggedIn).toBe(true);
     expect(storedAuth.username).toBe('testuser');
@@ -89,27 +81,22 @@ describe('AuthProvider', () => {
       </AuthProvider>
     );
     
-    // First, log in
     await act(async () => {
       screen.getByTestId('login-button').click();
     });
     
-    // Then, log out
     act(() => {
       screen.getByTestId('logout-button').click();
     });
     
-    // Verify the auth state
     expect(screen.getByTestId('isLoggedIn').textContent).toBe('false');
     expect(screen.getByTestId('username').textContent).toBe('');
     expect(screen.getByTestId('email').textContent).toBe('');
     
-    // Verify localStorage
     expect(localStorage.getItem('auth')).toBeNull();
   });
 
   it('should load auth state from localStorage on mount', async () => {
-    // Set up localStorage before rendering
     const storedAuth = {
       isLoggedIn: true,
       username: 'storeduser',
@@ -123,7 +110,6 @@ describe('AuthProvider', () => {
       </AuthProvider>
     );
     
-    // Verify the auth state is loaded from localStorage
     await waitFor(() => {
       expect(screen.getByTestId('isLoggedIn').textContent).toBe('true');
       expect(screen.getByTestId('username').textContent).toBe('storeduser');
