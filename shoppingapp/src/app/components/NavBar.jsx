@@ -14,13 +14,14 @@ const NavBar = ({ setShowLogin }) => {
   const router = useRouter();
 
   const handleCartClick = () => {
-    router.push("/Cart"); // Navigate to the Cart page
+    router.push("/Cart");
   };
 
   const handleLogout = () => {
-    clearCart(); // Clear the cart first
-    logout(); // Then logout the user
+    clearCart();
+    logout();
   };
+
   return (
     <nav className="navbar">
       {/* Logo Section */}
@@ -58,20 +59,14 @@ const NavBar = ({ setShowLogin }) => {
 
         {isLoggedIn ? (
           <div className="user-info">
-            <span className="welcome-text">Welcome, {username}!</span>{" "}
-            {/* Display Username */}
-            <button className="logout-btn" onClick={handleLogout}>
-              <Image
-                src="/logout-img.png"
-                alt="Logout"
-                width={22}
-                height={22}
-              />
+            <span className="welcome-text">Welcome, {username}!</span>
+            <button className="modern-btn logout-btn" onClick={handleLogout}>
+              <span className="btn-text">Logout</span>
             </button>
           </div>
         ) : (
-          <button className="login-btn" onClick={() => setShowLogin(true)}>
-            <Image src="/login-img.png" alt="Login" width={22} height={22} />
+          <button className="modern-btn login-btn" onClick={() => setShowLogin(true)}>
+            <span className="btn-text">Login</span>
           </button>
         )}
       </div>

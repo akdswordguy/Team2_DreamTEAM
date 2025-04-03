@@ -1,95 +1,170 @@
 /* Modal Overlay */
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Ensure it overlays other content */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Slightly lighter overlay for glass effect */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it overlays other content */
+}
+
+/* Modal Container with Glass Effect */
+.login-modal {
+  background: rgba(255, 239, 217, 0.274); /* Semi-transparent white */
+  backdrop-filter: blur(10px); /* Glass blur effect */
+  -webkit-backdrop-filter: blur(5px); /* For Safari */
+  width: 500px;
+  height: 400px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border for glass effect */
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  position: relative;
+  color: #fff; /* White text for better contrast on glass background */
+}
+
+/* Modal Header */
+.login-modal h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #fff; /* White text for glass background */
+  font-family: 'Italiana', serif;
+}
+
+/* Input Labels */
+.login-modal label {
+  color: #fff; /* White text for glass background */
+}
+
+/* Input Fields */
+.login-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Adjusted border for glass background */
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+  background: rgba(255, 255, 255, 0.05); /* Slightly transparent input background */
+  color: #fff; /* White text for glass background */
+}
+
+/* Input Field Focus State */
+.login-input:focus {
+  border-color: #a57245;
+}
+
+/* Submit Button */
+.btn.login-submit {
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #a57245; /* Primary color */
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Button Hover State */
+.btn.login-submit:hover {
+  background-color: #7d5229; /* Darker shade of primary color */
+}
+
+/* Signup Text */
+.signup-text {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #fff; /* White text for glass background */
+  padding: 0 10px;
+}
+
+.signup-text a {
+  color: #a57245;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signup-text a:hover {
+  text-decoration: underline;
+}
+
+/* Toast Notification */
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  min-width: 300px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  opacity: 0;
+  transform: translateX(100%);
+  animation: slideIn 0.5s ease forwards;
+}
+
+/* Slide-in animation for toast */
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
   }
-  
-  /* Modal Container */
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Success Toast */
+.toast-success {
+  background-color: #28a745; /* Green for success */
+  color: #fff;
+}
+
+/* Error Toast */
+.toast-error {
+  background-color: #ff6b6b; /* Red for error */
+  color: #fff;
+}
+
+/* Toast Text */
+.toast-notification p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
   .login-modal {
-    background: white;
-    width: 400px;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    font-family: "Poppins", sans-serif;
-    position: relative;
+    width: 90%;
+    height: 400px; /* Adjusted height for smaller screens */
   }
-  
-  /* Modal Header */
-  .login-modal h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  /* Input Fields */
-  .login-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 14px;
-    outline: none;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
-  }
-  
-  /* Input Field Focus State */
-  .login-input:focus {
-    border-color: #a57245;
-  }
-  
-  /* Submit Button */
-  .btn.login-submit {
-    width: 100%;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
-    background-color: #a57245; /* Primary color */
-    color: white;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  /* Button Hover State */
-  .btn.login-submit:hover {
-    background-color: #7d5229; /* Darker shade of primary color */
-  }
-  
-  /* Signup Text */
+
   .signup-text {
-    margin-top: 15px;
-    font-size: 14px;
-    color: #555;
+    padding: 0 5px;
   }
-  
-  .signup-text a {
-    color: #a57245;
-    text-decoration: none;
-    font-weight: bold;
+
+  .toast-notification {
+    min-width: 200px;
+    top: 10px;
+    right: 10px;
+    padding: 10px 15px;
   }
-  
-  .signup-text a:hover {
-    text-decoration: underline;
+
+  .toast-notification p {
+    font-size: 12px;
   }
-  
-  /* Error Text */
-  .error-text {
-    color: red;
-    font-size: 14px;
-    margin-top: 10px;
-  }
-  
+}

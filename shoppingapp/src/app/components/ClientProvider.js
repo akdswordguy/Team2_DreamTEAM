@@ -10,8 +10,9 @@ const ClientProvider = ({ children }) => {
 
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
-    setLoginModalOpen(false);
-    alert("Login successful!");
+    setTimeout(() => {
+      setLoginModalOpen(false);
+    }, 2000);
   };
 
   const handleLogout = () => {

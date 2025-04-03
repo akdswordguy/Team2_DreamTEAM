@@ -1,278 +1,96 @@
-/* Navbar */
-.navbar {
-  display: flex;
-  justify-content: space-between; /* Space between logo and other elements */
-  align-items: center;
-  padding: 10px 50px;
-  background: white;
-  width: 100%;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Logo Container */
-.logo-container {
+/* Modern Button Styles */
+.modern-btn {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 8px; /* Space between logo and text */
-}
-
-.logo-container img {
-  width: 35px;
-  height: 35px;
-}
-
-.logo {
-  font-size: 24px;
-  font-weight: bold;
-  font-family: "Poppins", sans-serif; /* Alternative to match the overall font */
-}
-
-/* Navigation Links */
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 50px;
-  font-family: "Italiana", serif;
   justify-content: center;
-  flex-grow: 1;
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
-}
-
-.nav-links li {
-  font-size: 21px;
+  gap: 8px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 25px;
+  font-family: 'Poppins', sans-serif;
   font-weight: 500;
-}
-
-.nav-links li a {
-  text-decoration: none;
-  color: #333;
-  transition: color 0.3s ease; /* Smooth hover effect */
-}
-
-.nav-links li a:hover {
-  color: #a57245; /* Highlight link hover */
-}
-
-/* Search Bar */
-.search-bar {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
   overflow: hidden;
-  background: white;
-  margin-left: auto;
-}
-
-
-/* Icons */
-.icons {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-left: 20px;
+  transition: all 0.3s ease;
 }
 
 /* Login Button */
 .login-btn {
-  margin-top: 5px;;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  background-color: #ffffff; /* Button background */
+  font-size: 18px;
+  padding: 8px 15px;
+  background: linear-gradient(135deg, #C18C5D 0%, #A57245 100%);
+  color: white;
+  box-shadow: 0 0 10px rgba(193, 140, 93, 0.5);
+  animation: login-glow 2s infinite alternate;
+}
+
+@keyframes login-glow {
+  from {
+    box-shadow: 0 0 10px rgba(193, 140, 93, 0.5);
+  }
+  to {
+    box-shadow: 0 0 15px rgba(197, 153, 115, 0.8);
+  }
+}
+
+/* Logout Button - Red Glowing Version */
+.logout-btn {
+  background: linear-gradient(135deg, #ff6565 0%, #d12b2b 100%);
   color: white;
   padding: 8px 15px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-  font-family: "Poppins", sans-serif;
-  transition: background-color 0.3s ease;
+  font-size: 18px;
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+  animation: logout-glow 2s infinite alternate;
 }
 
-
-/* User Info Block (for logged-in users) */
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Space between avatar and name */
+@keyframes logout-glow {
+  from {
+    box-shadow: 0 0 8px rgba(255, 145, 145, 0.5);
+  }
+  to {
+    box-shadow: 0 0 15px rgba(255, 189, 189, 0.8);
+  }
 }
 
-.user-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%; /* Circular avatar */
-  object-fit: cover;
-  cursor: pointer;
+/* Hover Effects */
+.modern-btn:hover::before {
+  transform: translateX(0);
 }
 
-.username {
-  font-size: 16px;
-  color: #333;
-  font-weight: 500;
-  white-space: nowrap; /* Prevent wrapping */
-  cursor: pointer;
-}
-
-.username:hover {
-  color: #a57245; /* Highlight username on hover */
-}
-
-/* Logout Button */
-.logout-btn {
-  background: none;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  color: #a57245;
-  padding: 8px 15px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.login-btn:hover {
+  transform: translateY(-2px);
+  animation: none;
+  box-shadow: 0 5px 20px rgba(193, 140, 93, 0.6);
 }
 
 .logout-btn:hover {
-  background: #f3f3f3; /* Subtle hover background */
-  color: #845339; /* Darker text */
+  transform: translateY(-2px);
+  animation: none;
+  box-shadow: 0 5px 20px rgba(255, 77, 77, 0.6);
+  background: linear-gradient(135deg, #ff3333 0%, #d14444 100%);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .navbar {
-    padding: 10px 20px;
-    justify-content: space-between;
-  }
-
-  .logo-container img {
-    width: 30px;
-    height: 30px;
-  }
-
-  .logo {
-    font-size: 20px;
-  }
-
-  .nav-links {
-    display: none; /* Hide navigation links on smaller screens */
-  }
-
-  .search-bar {
-    margin-left: 0;
-    width: 100%;
-    max-width: 200px; /* Prevent it from being too wide */
-    padding: 4px 8px;
-  }
-
-  .search-bar input {
-    font-size: 12px;
-    padding: 6px;
-  }
-
-  .search-button img {
-    width: 16px;
-    height: 16px;
-  }
-
-  .icons {
-    margin-left: 10px;
-    gap: 10px;
-  }
-
-  .icons img {
-    width: 28px;
-    height: 28px;
-  }
-
-  .login-btn {
-    padding: 6px 10px;
-    font-size: 12px;
-  }
-
-  .user-info {
-    gap: 8px;
-  }
-
-  .user-avatar {
-    width: 28px;
-    height: 28px;
-  }
-
-  .username {
-    font-size: 14px;
-  }
-
-  .logout-btn {
-    width: 80px;
-    height: 32px;
-    font-size: 12px;
-  }
+/* Button Press Effect */
+.modern-btn:active {
+  transform: translateY(1px);
 }
 
-@media (max-width: 480px) {
-  .navbar {
-    padding: 8px 10px;
-  }
+/* Text Animation */
+.modern-btn:hover .btn-text {
+  transform: translateX(3px);
+}
 
-  .logo-container img {
-    width: 25px;
-    height: 25px;
-  }
+/* User Info Styling */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-  .logo {
-    font-size: 18px;
-  }
-
-  .search-bar {
-    max-width: 150px;
-    padding: 3px 5px;
-  }
-
-  .search-bar input {
-    font-size: 10px;
-    padding: 4px;
-  }
-
-  .search-button img {
-    width: 14px;
-    height: 14px;
-  }
-
-  .icons {
-    margin-left: 5px;
-    gap: 8px;
-  }
-
-  .icons img {
-    width: 24px;
-    height: 24px;
-  }
-
-  .login-btn {
-    padding: 5px 8px;
-    font-size: 10px;
-  }
-
-  .user-info {
-    gap: 6px;
-  }
-
-  .user-avatar {
-    width: 24px;
-    height: 24px;
-  }
-
-  .username {
-    font-size: 12px;
-  }
-
-  .logout-btn {
-    width: 70px;
-    height: 28px;
-    font-size: 10px;
-    letter-spacing: 0.3px;
-  }
+.welcome-text {
+  font-size: 14px;
+  color: #555;
+  font-weight: 500;
 }

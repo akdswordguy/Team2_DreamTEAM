@@ -27,7 +27,6 @@ const ContactUs = () => {
   
   return (
     <div className="signup-page">
-      <NavBar></NavBar>
 
       {/* 📌 Map Section */}
       <div className="map">
