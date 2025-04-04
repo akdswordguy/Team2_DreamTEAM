@@ -224,6 +224,30 @@ body, html {
   margin-bottom: 20px;
 }
 
+/* Alert Styles */
+.alert {
+  margin-top: 15px;
+  margin-left: 220px;
+  width: 50%;
+  padding: 10px;
+  border-radius: 25px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.success-alert {
+  background: #e6f4e6; /* Light green background */
+  border: 1px solid #28a745; /* Green border */
+  color: #28a745; /* Green text */
+}
+
+.error-alert {
+  background: #f8d7da; /* Light red background */
+  border: 1px solid #dc3545; /* Red border */
+  color: #dc3545; /* Red text */
+}
+
 /* Login Modal Styles */
 .modal-overlay {
   position: fixed;
@@ -406,6 +430,12 @@ body, html {
   .signup-text {
     font-size: 12px;
   }
+
+  /* Responsive Alert Styles */
+  .alert {
+    margin-left: 0;
+    width: 80%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -511,5 +541,12 @@ body, html {
 
   .signup-text {
     font-size: 10px;
+  }
+
+  /* Responsive Alert Styles */
+  .alert {
+    width: 90%;
+    padding: 8px;
+    font-size: 12px;
   }
 }

@@ -21,7 +21,7 @@ const SignupPage = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    name: "",  // Added name field
+    name: "",
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
@@ -58,7 +58,7 @@ const SignupPage = () => {
             username: formData.username,
             email: formData.email,
             password: formData.password,
-            name: formData.name,  // Included name in variables
+            name: formData.name,
           },
         }),
       });
@@ -197,10 +197,19 @@ const SignupPage = () => {
             <button type="submit" className="signup-button" disabled={loading}>
               {loading ? "Signing up..." : "Create Account"}
             </button>
-          </form>
 
-          {error && <p className="error-message">Error: {error}</p>}
-          {message && <p className="success-message">{message}</p>}
+            {/* Alert Boxes for Success and Error Messages */}
+            {error && (
+              <div className="alert error-alert">
+                <p>{error}</p>
+              </div>
+            )}
+            {message && (
+              <div className="alert success-alert">
+                <p>{message}</p>
+              </div>
+            )}
+          </form>
         </div>
       </div>
     </div>
