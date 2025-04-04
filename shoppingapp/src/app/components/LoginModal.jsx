@@ -98,9 +98,15 @@ const LoginModal = ({ isOpen, closeModal, onLoginSuccess }) => {
           {loading ? "Logging in..." : "Login"}
         </button>
 
-        {/* Signup Text inside Modal */}
+        {/* Signup Text with Link */}
         <p className="signup-text">
-          Don't have an account? <Link href="./Signup">Sign up</Link>
+          Don't have an account?{" "}
+          <Link
+            href="./Signup"
+            onClick={() => closeModal()} // Close the modal before redirecting
+          >
+            Sign up
+          </Link>
         </p>
       </div>
 
