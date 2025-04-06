@@ -46,6 +46,9 @@ REFRESH_TOKEN_MODEL = "auth_app.RefreshToken"
 
 
 INSTALLED_APPS = [
+    'jazzmin',
+    # 'jet.dashboard',
+    # 'jet',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -57,6 +60,46 @@ INSTALLED_APPS = [
     "product",
     "corsheaders",
 ]
+JET_DEFAULT_THEME = 'light-gray'
+
+JET_THEMES = [
+    {
+        'theme': 'light-gray',
+        'color': '#47bac1',
+        'title': 'Light Gray',
+    },
+    {
+        'theme': 'light-violet',
+        'color': '#6254c2',
+        'title': 'Light Violet',
+    },
+]
+
+JET_SIDE_MENU_COMPACT = True
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Luxora Admin",
+    "site_header": "LUXORA Dashboard",
+    "site_brand": "LUXORA",
+    "welcome_sign": "Welcome, Prarthana 👋",
+    "search_model": ["product.Product", "auth_app.CustomUser", "product.Order"],
+    "topmenu_links": [
+        {"name": "Home", "url": "/", "permissions": ["auth.view_user"]},
+        {"model": "auth_app.customuser"},
+        {"app": "product"},
+    ],
+    "user_avatar": None,
+    "show_sidebar": True,
+    "show_ui_builder": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "default_theme": "darkly",
+    "custom_js": None,
+    "custom_css": "css/custom.css",
+    "changeform_format": "horizontal_tabs",
+}
+
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -156,7 +199,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+STATIC_ROOT = BASE_DIR / "staticfiles" 
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

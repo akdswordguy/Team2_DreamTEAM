@@ -8,7 +8,7 @@ def get_user_data(user_id):
 
         return {
             "username": user.username,
-            "email": user.email,
+            "email": user.email, # api error
         }
     except User.DoesNotExist:
         return None

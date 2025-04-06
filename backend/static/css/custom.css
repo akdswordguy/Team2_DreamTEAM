@@ -1,0 +1,118 @@
+/* ===== General Theme Colors ===== */
+body, .content-wrapper, .main-footer {
+    background-color: #f9f5f0 !important; 
+    color: #4b3d33 !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar {
+    background-color: #e7d8c3 !important;
+    color: #4b3d33 !important;
+}
+
+/* ===== Sidebar Fixes ===== */
+.main-sidebar {
+    background-color: #e7d8c3 !important;
+    padding-top: 20px;
+}
+
+.sidebar .nav-item a {
+    color: #4b3d33 !important;
+    padding: 10px 20px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-item a:hover {
+    background-color: #d4c2aa !important;
+    color: #2e241c !important;
+    padding-left: 25px;
+}
+
+/* Active sidebar item */
+.sidebar .nav-item.active > a, 
+.sidebar .nav-item a.active {
+    background-color: #cbb79f !important;
+    color: #2e241c !important;
+    font-weight: bold;
+}
+
+/* Sidebar section/group titles */
+.nav-sidebar .nav-header {
+    color: #4b3d33 !important;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin: 10px 0 4px 15px;
+    padding-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+/* ===== Navbar ===== */
+.main-header, .navbar {
+    background-color: #f4ede4 !important;
+    border-bottom: 1px solid #d1bfae !important;
+}
+
+.navbar a, .navbar-nav .nav-link {
+    color: #4b3d33 !important;
+}
+
+/* ===== Tables & Content ===== */
+.table-hover tbody tr:hover {
+    background-color: #f2e9df !important;
+}
+
+.card, .box, .modal-content {
+    background-color: #fffaf5 !important;
+    border: 1px solid #e4d4c0 !important;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(200, 170, 130, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover, .box:hover {
+    box-shadow: 0 6px 16px rgba(160, 130, 100, 0.2);
+}
+
+/* Inputs and Forms */
+input, select, textarea {
+    background-color: #f8f1e9 !important;
+    border: 1px solid #c6b19e !important;
+    color: #4b3d33 !important;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #a38b73 !important;
+    box-shadow: 0 0 4px #b59f89 !important;
+}
+
+/* Buttons */
+.btn, .btn-primary, .btn-success {
+    background-color: #b59f89 !important;
+    border-color: #a38b73 !important;
+    color: white !important;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #a38b73 !important;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in, .content-wrapper, .main-header, .main-sidebar {
+    animation: fadeIn 0.5s ease;
+}
+
+a {
+    color: #805d3a !important;
+}
+
+a:hover {
+    color: #5d3d1e !important;
+    text-decoration: underline;
+}
