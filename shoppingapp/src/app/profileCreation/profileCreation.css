@@ -1,14 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Italiana&display=swap');
 
 body, html {
   margin: 0;
   padding: 0;
-  font-family: 'Poppins', sans-serif;
-  background: #614606;
+  font-family: 'Josefin Sans', sans-serif;
+  background: #f5f5f5;
   color: #333;
 }
 
-/* Navbar */
+/* Navbar (Preserved from original) */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -95,45 +96,86 @@ body, html {
 
 /* Signup Section */
 .signup {
-  padding: 140px 50px;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background: #fff;
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  gap: 20px;
+  margin: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 100px; /* Adjusted for navbar height */
+  height: fit-content;
+}
+
+.sidebar-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-item {
+  display: flex;
   align-items: center;
+  padding: 10px 15px;
+  font-size: 16px;
+  color: #666;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.sidebar-item:hover {
+  background: #f0f0f0;
+}
+
+.sidebar-item.active {
+  background: #e6f0fa;
+  color: #007bff;
+  font-weight: 600;
+}
+
+.sidebar-icon {
+  margin-right: 10px;
+  font-size: 18px;
 }
 
 /* Main Content Layout */
 .main-content {
+  flex: 1;
+  padding: 140px 50px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   width: 95%;
-  margin-top: 40px;
 }
 
 /* Left Section (Personal Info & Location) */
 .left-section {
-  flex: 3.5; /* Increased space for the left section */
+  flex: 3.5;
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
 
-/* Right Section (Video) */
+/* Right Section (Removed as per image design) */
 .right-section {
-  flex: 1.5; /* Increased flex to give more space */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Video Styling */
-.video-content {
-  width: 100%;
-  max-width: 400px; /* Increased maximum width */
-  height: 1380px; /* Increased height */
-  border-radius: 12px;
-  object-fit: cover;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  display: none;
 }
 
 /* Signup Containers */
@@ -144,12 +186,29 @@ body, html {
   border-radius: 15px;
   border: 2px solid #ddd;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Banner Video */
+.banner-video {
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.luxora-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Form + Profile Picture Layout */
 .form-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
   gap: 40px;
   width: 100%;
@@ -162,6 +221,54 @@ body, html {
   flex-direction: column;
 }
 
+/* Profile Upload Section */
+.profile-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 40%;
+  border-left: 2px solid #eee;
+  padding-left: 20px;
+}
+
+.profile-picture-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.change-picture-button {
+  padding: 8px 16px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.change-picture-button:hover {
+  background: #0056b3;
+}
+
+.delete-picture-button {
+  padding: 8px 16px;
+  background: transparent;
+  color: #dc3545;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.delete-picture-button:hover {
+  background: #f8d7da;
+}
+
+/* Section Title */
 .section-title {
   font-family: 'Italiana', serif;
   font-size: 26px;
@@ -172,13 +279,6 @@ body, html {
 }
 
 /* Input Fields */
-.input-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 30px;
-  margin-bottom: 20px;
-}
-
 .input-group {
   margin-bottom: 15px;
   display: flex;
@@ -192,7 +292,9 @@ body, html {
   margin-bottom: 5px;
 }
 
-.input-group input {
+.input-group input,
+.input-group select,
+.input-group textarea {
   padding: 12px;
   border-radius: 8px;
   border: 1px solid #ccc;
@@ -201,45 +303,75 @@ body, html {
   width: 100%;
 }
 
-.input-group input:focus {
-  border-color: black;
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+  border-color: #007bff;
   outline: none;
 }
 
-/* Profile Upload Section */
-.profile-upload {
+.input-group textarea {
+  resize: vertical;
+}
+
+.field-note {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+}
+
+/* Order List Section */
+.order-list {
+  width: 100%;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.order-table th,
+.order-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.order-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+
+.order-table td {
+  background: #fff;
+}
+
+/* Delete Account Section */
+.delete-account-section {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 40%;
-  border-left: 2px solid #eee;
-  padding-left: 20px;
-  text-align: center;
+  gap: 20px;
 }
 
-.profile-upload img {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #ddd;
+.delete-warning {
+  color: #dc3545;
+  font-size: 16px;
 }
 
-.upload-button {
-  margin-top: 15px;
-  padding: 10px 15px;
-  background: black;
+.delete-account-button {
+  padding: 12px 18px;
+  font-size: 16px;
+  font-weight: bold;
+  background: #dc3545;
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.upload-button:hover {
-  background: #444;
+.delete-account-button:hover {
+  background: #c82333;
 }
 
 /* Update Profile & Logout Buttons */
@@ -270,9 +402,26 @@ body, html {
 
 /* Responsive Design */
 @media (max-width: 1024px) {
+  .signup {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: calc(100% - 40px);
+    margin: 20px;
+    position: static;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
   .main-content {
     flex-direction: column;
     align-items: center;
+    padding: 80px 20px 20px 20px;
   }
 
   .signup-container {
@@ -290,21 +439,7 @@ body, html {
     border-left: none;
     padding-left: 0;
     margin-top: 20px;
-  }
-
-  .input-row {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .right-section {
-    width: 100%;
-    margin-top: 30px;
-  }
-
-  .video-content {
-    max-width: 100%;
-    height: auto; /* Allowing video to adjust proportionally */
+    align-items: center;
   }
 
   .button-group {
@@ -320,8 +455,7 @@ body, html {
 }
 
 @media (max-width: 768px) {
-  .video-content {
-    width: 100%;
-    height: 280px; /* Adjusted height for smaller screens */
+  .banner-video {
+    height: 100px;
   }
 }

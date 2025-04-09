@@ -30,7 +30,6 @@ const Profile = () => {
           <PencilIcon />
         </button>
       </div>
-      <h1 className="text-black font-bold mt-6">ADD PROFILE PIC</h1>
 
       {modalOpen && (
         <Modal
