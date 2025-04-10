@@ -46,7 +46,7 @@ REFRESH_TOKEN_MODEL = "auth_app.RefreshToken"
 
 
 INSTALLED_APPS = [
-    'jazzmin',
+    "jazzmin",
     # 'jet.dashboard',
     # 'jet',
     "django.contrib.admin",

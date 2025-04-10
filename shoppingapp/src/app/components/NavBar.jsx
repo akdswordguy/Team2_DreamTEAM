@@ -20,6 +20,7 @@ const NavBar = ({ setShowLogin }) => {
   const handleLogout = () => {
     clearCart();
     logout();
+    router.push("/");
   };
   
   const handleProfileClick = () => {

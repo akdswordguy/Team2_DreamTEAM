@@ -8,29 +8,17 @@ import { useAuth } from "../context/AuthContext";
 
 const CreateProfile = () => {
   const [showLogin, setShowLogin] = useState(false);
-  const [activeSection, setActiveSection] = useState("Profile"); // State to track active section
-  const [selectedImage, setSelectedImage] = useState(null); // Track the selected image
+  const [activeSection, setActiveSection] = useState("Profile");
+  const [selectedImage, setSelectedImage] = useState(null);
   const { username, email, isLoggedIn, logout } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
 
-  // Dummy data for Order List
   const orderList = [
     { id: 1, product: "Laptop", price: 999.99, date: "2025-03-01" },
     { id: 2, product: "Headphones", price: 49.99, date: "2025-03-15" },
     { id: 3, product: "Mouse", price: 29.99, date: "2025-03-20" },
   ];
-
-  // Delay login check by 2 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!isLoggedIn) {
-        alert("You need to be logged in to access this page!");
-      }
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [isLoggedIn, router]);
 
   useEffect(() => {
     console.log("ProfilePage - User Data:", { username, email, isLoggedIn });
@@ -42,22 +30,18 @@ const CreateProfile = () => {
     }
   }, [pathname]);
 
-  // Handle section change for sidebar navigation
   const handleSectionChange = (section) => {
     setActiveSection(section);
   };
 
-  // Handle image selection from Profile component
   const handleImageChange = (imgSrc) => {
     setSelectedImage(imgSrc);
   };
 
-  // Handle image deletion
   const handleImageDelete = () => {
     setSelectedImage(null);
   };
 
-  // Handle form submission (including image update)
   const handleSaveChanges = () => {
     if (selectedImage) {
       console.log("Uploading image:", selectedImage);
@@ -65,17 +49,24 @@ const CreateProfile = () => {
     alert("Profile updated successfully!");
   };
 
-  // Handle account deletion
   const handleDeleteAccount = () => {
     if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
       alert("Account deletion request submitted!");
-      // Add actual deletion logic here (e.g., API call)
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Logout failed:", error);
+      alert("Logout failed. Please try again.");
     }
   };
 
   return (
     <div className="signup">
-      {/* Sidebar */}
       <div className="sidebar">
         <h2 className="sidebar-title">Settings</h2>
         <ul className="sidebar-nav">
@@ -106,13 +97,10 @@ const CreateProfile = () => {
         </ul>
       </div>
 
-      {/* Main Container */}
       <div className="main-content">
-        {/* Left Content - Form and Profile Upload */}
         <div className="left-section">
           {activeSection === "Profile" && (
             <>
-              {/* Profile Section */}
               <div className="signup-container">
                 <h2 className="section-title">Profile</h2>
                 <div className="banner-video">
@@ -122,7 +110,6 @@ const CreateProfile = () => {
                   </video>
                 </div>
                 <div className="form-container">
-                  {/* Profile Upload Section */}
                   <div className="profile-upload">
                     <Profile onImageChange={handleImageChange} onDelete={handleImageDelete} />
                     <div className="profile-picture-buttons">
@@ -133,7 +120,6 @@ const CreateProfile = () => {
                     </div>
                   </div>
 
-                  {/* Form Fields */}
                   <div className="form-fields">
                     <div className="input-group">
                       <label htmlFor="profileName">Profile Name</label>
@@ -164,7 +150,6 @@ const CreateProfile = () => {
                 </div>
               </div>
 
-              {/* Personal Information Section */}
               <div className="signup-container">
                 <h2 className="section-title">Personal Information</h2>
                 <div className="form-fields">
@@ -263,24 +248,18 @@ const CreateProfile = () => {
             </div>
           )}
 
-          {/* Buttons: Update Profile & Log Out */}
           <div className="button-group">
             <button className="update-profile-button" onClick={handleSaveChanges}>
               Update Profile
             </button>
-            <button
-              className="logout-button"
-              onClick={() => {
-                logout();
-                alert("You have been logged out successfully!");
-              }}
+            <button 
+              className="logout-button" 
+              onClick={handleLogout}
             >
               Log Out
             </button>
           </div>
         </div>
-
-        {/* Right Content - Video Placeholder (Removed as per image design) */}
       </div>
     </div>
   );

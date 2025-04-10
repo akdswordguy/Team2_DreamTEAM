@@ -1,66 +1,61 @@
 "use client";
 
 import React from "react";
-import { useCart } from "../context/CartContext"; // Import Cart Context
-import { useAuth } from "../context/AuthContext"; // Import Auth Context
+import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 import Image from "next/image";
-import NavBar from "../components/NavBar"; // Import NavBar component
+import NavBar from "../components/NavBar";
 import "./Cart.css";
 import { useParams, useRouter } from "next/navigation";
 
 const CartPage = () => {
   const router = useRouter();
-  const { isLoggedIn, userId, email } = useAuth(); // Get userId and email from AuthContext
+  const { isLoggedIn, userId, email, setShowLogin } = useAuth();
   const { cart, removeItem, totalCost, increaseQuantity, decreaseQuantity } =
     useCart();
 
   const handleCheckout = async () => {
     if (!isLoggedIn) {
-      alert("Please log in to proceed with checkout.");
-      return;
-    }
-
-    if (!email || !userId) {
-      alert("User information is incomplete. Please try logging in again.");
+      if (setShowLogin) {
+        setShowLogin(true);
+      } else {
+        alert("Please login to complete your purchase. You'll be redirected to the home page.");
+        router.push("/");
+        return;
+      }
       return;
     }
 
     if (cart.length === 0) {
-      alert("Cart is empty. Please add items to your cart before checkout.");
+      alert("Your cart is empty. Please add items to your cart before checking out.");
       return;
     }
 
     try {
-      // Prepare the GraphQL query and variables
       const query = `
-     mutation CreateOrder($userId: Int!, $totalAmount: Float!, $status: String!) {
-    orderMutations {
-      createOrder(userId: $userId, totalAmount: $totalAmount, status: $status) {
-        success
-        message
-        order {
-          id
-          userId      
-          totalPrice  
-          status
+        mutation CreateOrder($userId: Int!, $totalAmount: Float!, $status: String!) {
+          orderMutations {
+            createOrder(userId: $userId, totalAmount: $totalAmount, status: $status) {
+              success
+              message
+              order {
+                id
+                userId      
+                totalPrice  
+                status
+              }
+            }
+          }
         }
-      }
-    }
-  }
-`;
+      `;
 
-      // Round totalCost to 2 decimal places and ensure it's a float
       const totalAmount = parseFloat(totalCost.toFixed(2));
-
-      console.log("Total Amount:", totalAmount, typeof totalAmount); // Debugging
-
       const variables = {
-        userId: parseInt(userId), // Ensure userId is an integer
-        totalAmount, // Use the rounded total amount
+        userId: parseInt(userId),
+        totalAmount,
         status: "Pending",
       };
 
-      // Send the GraphQL mutation request
       const response = await fetch("http://127.0.0.1:8000/product/graphql/", {
         method: "POST",
         headers: {
@@ -75,8 +70,8 @@ const CartPage = () => {
       const result = await response.json();
 
       if (result?.data?.orderMutations?.createOrder?.success) {
-        alert(result.data.orderMutations.createOrder.message);
         router.push("/Order");
+      } else {
         alert(
           result?.data?.orderMutations?.createOrder?.message ||
             "Failed to create order. Please try again."
@@ -94,7 +89,6 @@ const CartPage = () => {
     <div className="cart-container">
       <h1 className="cart-title">Shopping Cart</h1>
       <div className="cart-content">
-        {/* Cart Items Section */}
         <div className="cart-items">
           {cart.length > 0 ? (
             cart.map((item) => (
@@ -139,7 +133,6 @@ const CartPage = () => {
           )}
         </div>
 
-        {/* Checkout Section */}
         <div className="checkout-wrapper">
           <div className="checkout-section">
             <h2 className="checkout-title">Order Summary</h2>
@@ -157,7 +150,6 @@ const CartPage = () => {
             </button>
           </div>
 
-          {/* Video Section */}
           <div className="video-container">
             <video className="checkout-video" autoPlay loop muted playsInline>
               <source src="/cart-vid.webm" type="video/webm" />
