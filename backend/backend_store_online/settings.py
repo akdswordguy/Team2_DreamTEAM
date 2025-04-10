@@ -40,7 +40,7 @@ DATABASES = {
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['luxora-backend-2ep1.onrender.com', 'localhost', '127.0.0.1']
 
 REFRESH_TOKEN_MODEL = "auth_app.RefreshToken"
 
