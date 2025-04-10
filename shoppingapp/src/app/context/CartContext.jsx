@@ -1,26 +1,41 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import Cookies from "js-cookie";
+import { useAuth } from "./AuthContext"; // Adjust this path as needed
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
+  const { username } = useAuth(); // Get current user
   const [cart, setCart] = useState([]);
 
-  // Retrieve cart data from localStorage when the component mounts
+  // Load cart from cookies when username changes
   useEffect(() => {
-    const storedCart = localStorage.getItem("cart");
-    if (storedCart) {
-      setCart(JSON.parse(storedCart)); // Set cart from localStorage
+    if (username) {
+      const cookieCart = Cookies.get(`cart-${username}`);
+      if (cookieCart) {
+        try {
+          setCart(JSON.parse(cookieCart));
+        } catch (error) {
+          console.error("Failed to parse cart cookie:", error);
+          setCart([]);
+        }
+      } else {
+        setCart([]);
+      }
+    } else {
+      setCart([]); // no user = empty cart
     }
-  }, []);
+  }, [username]);
 
-  // Save cart data to localStorage whenever it changes
+  // Save cart to cookies when it changes
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+    if (username) {
+      Cookies.set(`cart-${username}`, JSON.stringify(cart), { expires: 7 });
+    }
+  }, [cart, username]);
 
-  // Add item to cart or increase quantity if it already exists
   const addItem = (item) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
@@ -36,14 +51,12 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  // Remove item from cart
   const removeItem = (itemId) => {
     setCart((prevCart) =>
       prevCart.filter((cartItem) => cartItem.id !== itemId)
     );
   };
 
-  // Increase quantity of a specific item
   const increaseQuantity = (itemId) => {
     setCart((prevCart) =>
       prevCart.map((cartItem) =>
@@ -54,33 +67,32 @@ export const CartProvider = ({ children }) => {
     );
   };
 
-  // Decrease quantity of a specific item (remove if quantity reaches 0)
   const decreaseQuantity = (itemId) => {
-    setCart(
-      (prevCart) =>
-        prevCart
-          .map((cartItem) =>
-            cartItem.id === itemId
-              ? { ...cartItem, quantity: cartItem.quantity - 1 }
-              : cartItem
-          )
-          .filter((cartItem) => cartItem.quantity > 0) // Remove item if quantity is 0
+    setCart((prevCart) =>
+      prevCart
+        .map((cartItem) =>
+          cartItem.id === itemId
+            ? { ...cartItem, quantity: cartItem.quantity - 1 }
+            : cartItem
+        )
+        .filter((cartItem) => cartItem.quantity > 0)
     );
   };
-  // Clear the entire cart
+
   const clearCart = () => {
-    setCart([]); // Reset cart to an empty array
+    setCart([]);
+    if (username) {
+      Cookies.remove(`cart-${username}`);
+    }
   };
-  // Calculate total quantity of items in the cart
+
   const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-  // Calculate total cost of items in the cart
   const totalCost = cart.reduce(
     (sum, item) => sum + item.quantity * item.price,
     0
   );
 
-  // Value object to be provided by the context
   const value = {
     cart,
     addItem,

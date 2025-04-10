@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { gql, GraphQLClient } from "graphql-request";
-import { useCart } from "./CartContext"; // Import useCart
+import Cookies from 'js-cookie'; // Import cookies library
 
 const AuthContext = createContext();
 
@@ -12,7 +12,7 @@ const GET_USER_ID_BY_USERNAME = gql`
   }
 `;
 
-const gqlClient = new GraphQLClient("http://127.0.0.1:8000/auth_app/graphql/"); // Replace with your backend GraphQL endpoint
+const gqlClient = new GraphQLClient("http://127.0.0.1:8000/auth_app/graphql/");
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
@@ -23,11 +23,19 @@ export const AuthProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    const storedAuth = localStorage.getItem("auth");
-    console.log("Stored Auth from localStorage:", storedAuth);
+    const authCookie = Cookies.get("auth");
+    console.log("Stored Auth from cookie:", authCookie);
 
-    if (storedAuth) {
-      const parsedAuth = JSON.parse(storedAuth);
+    if (authCookie) {
+      let parsedAuth;
+      try {
+        parsedAuth = JSON.parse(authCookie);
+      } 
+      catch (err) {
+        console.error("Invalid auth cookie JSON", err);
+        Cookies.remove("auth"); 
+        return;
+      }
 
       console.log("parsedAuth ", JSON.stringify(parsedAuth));
 
@@ -43,14 +51,12 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUserIdByUsername = async (username) => {
     try {
-      const data = await gqlClient.request(GET_USER_ID_BY_USERNAME, {
-        username,
-      });
-      console.log("Fetched userID by username:", data.userIdByUsername); // 🔍 Debugging
+      const variables = { username };
+      const data = await gqlClient.request(GET_USER_ID_BY_USERNAME, variables);
       return data.userIdByUsername;
     } catch (error) {
-      console.error("Error fetching userId by username:", error);
-      return null;
+      console.error("Error:", error.response?.errors || error.message);
+      throw error;
     }
   };
 
@@ -62,8 +68,10 @@ export const AuthProvider = ({ children }) => {
       email,
       userId,
     };
+    
     setAuth(newAuthState);
-    localStorage.setItem("auth", JSON.stringify(newAuthState));
+    // Set cookie with 7 day expiration
+    Cookies.set("auth", JSON.stringify(newAuthState), { expires: 7 });
     console.log("User Logged In:", newAuthState);
   };
 
@@ -72,14 +80,13 @@ export const AuthProvider = ({ children }) => {
       isLoggedIn: false,
       username: null,
       email: null,
-      userId: null, // Clear the userId as well
+      userId: null,
     });
-    localStorage.removeItem("auth");
-
-    console.log("User Logged Out and Cart Cleared"); // 🔍 Debugging Line
+    Cookies.remove("auth");
+    console.log("User Logged Out and Cart Cleared");
   };
 
-  console.log("Current Auth State:", auth); // 🔍 Debugging Line
+  console.log("Current Auth State:", auth);
 
   return (
     <AuthContext.Provider value={{ ...auth, login, logout }}>
