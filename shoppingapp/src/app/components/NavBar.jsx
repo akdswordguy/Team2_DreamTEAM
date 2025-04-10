@@ -21,6 +21,14 @@ const NavBar = ({ setShowLogin }) => {
     clearCart();
     logout();
   };
+  
+  const handleProfileClick = () => {
+    if (isLoggedIn){
+      router.push("/profileCreation");
+    }else{
+      setShowLogin(true);
+    }
+  };
 
   return (
     <nav className="navbar">
@@ -41,7 +49,9 @@ const NavBar = ({ setShowLogin }) => {
           <Link href="/">Home</Link>
         </li>
         <li>
-          <Link href="/profileCreation">Profile</Link>
+          <button onClick={handleProfileClick} className="nav-button">
+            Profile
+          </button>
         </li>
         <li>
           <Link href="/Contact">Contact</Link>
