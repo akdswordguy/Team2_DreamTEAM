@@ -112,7 +112,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 ]
 CORS_ALLOWED_ORIGINS = [
-    "https://luxora-eight.vercel.app",
+    "https://team2-dreamteam-1.onrender.com",  # Frontend URL
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
