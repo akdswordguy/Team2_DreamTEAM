@@ -40,7 +40,7 @@ DATABASES = {
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["team2-dreamteam.onrender.com"]
+ALLOWED_HOSTS = ["team2-dreamteam.onrender.com", "127.0.0.1", "localhost"]
 
 REFRESH_TOKEN_MODEL = "auth_app.RefreshToken"
 
