@@ -1,13 +1,8 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
-const BASE_API = process.env.NEXT_PUBLIC_API_BASE;
+const GRAPHQL_URL = "https://team2-dreamteam.onrender.com/graphql/";
 
-export const authClient = new ApolloClient({
-  uri: "https://luxora-backend-2ep1.onrender.com/auth_app/",
-  cache: new InMemoryCache(),
-});
-
-export const productClient = new ApolloClient({
-  uri: "https://luxora-backend-2ep1.onrender.com/product/",
+export const graphqlClient = new ApolloClient({
+  uri: GRAPHQL_URL,
   cache: new InMemoryCache(),
 });
