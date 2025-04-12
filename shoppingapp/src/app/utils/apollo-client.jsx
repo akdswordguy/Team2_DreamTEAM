@@ -1,13 +1,13 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
-// GraphQL endpoint for authentication
+const BASE_API = process.env.NEXT_PUBLIC_API_BASE;
+
 export const authClient = new ApolloClient({
-  uri: "http://127.0.0.1:8000/auth_app/graphql/",
+  uri: `${BASE_API}/auth_app/`,
   cache: new InMemoryCache(),
 });
 
-// GraphQL endpoint for products
 export const productClient = new ApolloClient({
-  uri: "http://127.0.0.1:8000/product/graphql/",
+  uri: `${BASE_API}/product/`,
   cache: new InMemoryCache(),
 });
