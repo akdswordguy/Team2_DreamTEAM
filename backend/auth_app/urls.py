@@ -5,5 +5,5 @@ from django.views.decorators.csrf import csrf_exempt
 from strawberry.django.views import GraphQLView
 
 urlpatterns = [
-    path("", csrf_exempt(auth_enabled_view(GraphQLView.as_view(schema=schema)))),
+    path("graphql/", csrf_exempt(auth_enabled_view(GraphQLView.as_view(schema=schema)))),
 ]
