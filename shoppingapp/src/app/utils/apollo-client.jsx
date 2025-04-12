@@ -1,8 +1,13 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
-const GRAPHQL_URL = "https://team2-dreamteam.onrender.com/graphql/";
+const BASE_API = process.env.NEXT_PUBLIC_API_BASE;
 
-export const graphqlClient = new ApolloClient({
-  uri: GRAPHQL_URL,
+export const authClient = new ApolloClient({
+  uri: `${BASE_API}/auth_app/`,
+  cache: new InMemoryCache(),
+});
+
+export const productClient = new ApolloClient({
+  uri: `${BASE_API}/product/`,
   cache: new InMemoryCache(),
 });
