@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { gql, GraphQLClient } from "graphql-request";
-import Cookies from 'js-cookie'; // Import cookies library
+import Cookies from "js-cookie";
 
 const AuthContext = createContext();
 
@@ -12,7 +12,7 @@ const GET_USER_ID_BY_USERNAME = gql`
   }
 `;
 
-const gqlClient = new GraphQLClient("http://127.0.0.1:8000/auth_app/graphql/");
+const gqlClient = new GraphQLClient("https://team2-dreamteam.onrender.com/auth_app/graphql/");
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
@@ -22,30 +22,40 @@ export const AuthProvider = ({ children }) => {
     userId: null,
   });
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const authCookie = Cookies.get("auth");
-    console.log("Stored Auth from cookie:", authCookie);
 
     if (authCookie) {
       let parsedAuth;
       try {
         parsedAuth = JSON.parse(authCookie);
-      } 
-      catch (err) {
+      } catch (err) {
         console.error("Invalid auth cookie JSON", err);
-        Cookies.remove("auth"); 
+        Cookies.remove("auth", { path: "" });
+        setIsLoading(false);
         return;
       }
 
-      console.log("parsedAuth ", JSON.stringify(parsedAuth));
-
       if (parsedAuth.username) {
-        fetchUserIdByUsername(parsedAuth.username).then((userId) => {
-          setAuth({ ...parsedAuth, userId });
-        });
+        fetchUserIdByUsername(parsedAuth.username)
+          .then((userId) => {
+            setAuth({ ...parsedAuth, userId });
+          })
+          .catch((err) => {
+            console.error("Failed to fetch user ID", err);
+            Cookies.remove("auth", { path: "" });
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
       } else {
         setAuth(parsedAuth);
+        setIsLoading(false);
       }
+    } else {
+      setIsLoading(false);
     }
   }, []);
 
@@ -55,7 +65,7 @@ export const AuthProvider = ({ children }) => {
       const data = await gqlClient.request(GET_USER_ID_BY_USERNAME, variables);
       return data.userIdByUsername;
     } catch (error) {
-      console.error("Error:", error.response?.errors || error.message);
+      console.error("GraphQL Error:", error.response?.errors || error.message);
       throw error;
     }
   };
@@ -68,9 +78,7 @@ export const AuthProvider = ({ children }) => {
       email,
       userId,
     };
-    
     setAuth(newAuthState);
-    // Set cookie with 7 day expiration
     Cookies.set("auth", JSON.stringify(newAuthState), { expires: 7 });
     console.log("User Logged In:", newAuthState);
   };
@@ -82,14 +90,14 @@ export const AuthProvider = ({ children }) => {
       email: null,
       userId: null,
     });
-    Cookies.remove("auth");
-    console.log("User Logged Out and Cart Cleared");
+    Cookies.remove("auth", { path: "" });
+    console.log("User Logged Out");
   };
 
   console.log("Current Auth State:", auth);
 
   return (
-    <AuthContext.Provider value={{ ...auth, login, logout }}>
+    <AuthContext.Provider value={{ ...auth, login, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
