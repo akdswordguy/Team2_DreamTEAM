@@ -113,6 +113,7 @@ MIDDLEWARE = [
 ]
 CORS_ALLOWED_ORIGINS = [
     "https://team2-dreamteam-1.onrender.com",  # Frontend URL
+    "http://localhost:3000",
 ]
 CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = "backend_store_online.urls"
